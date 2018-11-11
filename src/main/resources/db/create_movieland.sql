@@ -34,7 +34,7 @@ CREATE UNIQUE INDEX urre_id_uindex     ON movieland.user_role (id)
 ;
 CREATE UNIQUE INDEX urre_code_uindex   ON movieland.user_role (code)
 ;
-CREATE UNIQUE INDEX urre_title_uindex   ON movieland.user_role (title)
+CREATE UNIQUE INDEX urre_title_uindex  ON movieland.user_role (title)
 ;
 
 
@@ -81,7 +81,7 @@ CREATE UNIQUE INDEX dcry_title_uindex  ON movieland.d_country (title)
 CREATE TABLE movieland.movie
 ( id                                   SERIAL        NOT NULL PRIMARY KEY,
   title                                VARCHAR       NOT NULL,
-  country_id                           INT           NOT NULL,
+  title_original                       VARCHAR       NOT NULL,
   release_year                         INT           NOT NULL,
   description                          VARCHAR,
   rating                               NUMERIC(3,1),
@@ -146,4 +146,24 @@ ALTER TABLE movieland.ref_movie_genre
 ALTER TABLE movieland.ref_movie_genre
  ADD CONSTRAINT rmre_genre_fk           FOREIGN KEY (genre_id) 
      REFERENCES movieland.d_genre      (id)
+;
+
+
+CREATE TABLE movieland.ref_movie_country
+( movie_id                             INT           NOT NULL,
+  country_id                           INT           NOT NULL
+)
+;
+ALTER TABLE movieland.ref_movie_country
+ ADD CONSTRAINT rmcy_pk                PRIMARY KEY (movie_id, country_id)
+;
+CREATE UNIQUE INDEX rmcy_pk_uindex     ON movieland.ref_movie_country (movie_id, country_id)
+;
+ALTER TABLE movieland.ref_movie_country
+ ADD CONSTRAINT rmcy_movie_fk           FOREIGN KEY (movie_id) 
+     REFERENCES movieland.movie        (id)
+;
+ALTER TABLE movieland.ref_movie_country
+ ADD CONSTRAINT rmccy_genre_fk           FOREIGN KEY (country_id) 
+     REFERENCES movieland.d_country      (id)
 ;
