@@ -2,7 +2,7 @@ CREATE USER movieland WITH createdb password 'movieland'
 ;
 CREATE database movieland WITH owner movieland
 ;
-\c movieland
+\connect "dbname=movieland user=movieland password=movieland"
 ;
 CREATE SCHEMA movieland AUTHORIZATION movieland
 ;
