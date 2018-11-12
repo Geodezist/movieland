@@ -10,15 +10,23 @@ import java.io.InputStream;
 
 public class PostgresMovieLandDataSource implements MovieLandDataSource {
 
+    private String configFileName = "property/datasource-property.yml";
+
+    public PostgresMovieLandDataSource() {
+    }
+
+    public PostgresMovieLandDataSource(String configFileName){
+        this.configFileName = configFileName;
+    }
+
     @Override
     public DataSource getDataSource() throws IOException {
         Yaml yaml = new Yaml();
         DataSourceConfiguration configuration;
 
         InputStream inputStream = new InputStreamFromFileFactory().
-                getInputStreamFromFile("/src/main/resources/property/datasource-property.yml");
+                getInputStreamFromFile(configFileName);
         configuration = yaml.loadAs(inputStream, DataSourceConfiguration.class);
-
 
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(configuration.getDriverClassName());

@@ -12,12 +12,13 @@ import static org.junit.Assert.*;
 
 public class JdbcMovieDaoTest {
 
-    private MovieLandDataSource movieLandDataSource;
     private MovieDao movieDao;
 
     @Before
     public void before(){
-        movieLandDataSource = new PostgresMovieLandDataSource();
+        String dataSourceConfigFile ="/src/main/resources/property/datasource-property.yml";
+        MovieLandDataSource movieLandDataSource = new PostgresMovieLandDataSource(
+                dataSourceConfigFile);
         try {
             movieDao = new JdbcMovieDao(movieLandDataSource.getDataSource());
             ((JdbcMovieDao) movieDao).init();
