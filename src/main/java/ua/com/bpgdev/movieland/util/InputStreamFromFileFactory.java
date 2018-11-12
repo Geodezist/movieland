@@ -15,7 +15,7 @@ public class InputStreamFromFileFactory implements Closeable {
 
         inputStream = file.isFile() ?
                 new FileInputStream(file) :
-                this.getClass().getResourceAsStream(fileName);
+                this.getClass().getClassLoader().getResourceAsStream(fileName);
         if (inputStream == null){
             throw new FileNotFoundException("File " + absoluteFileName + " or " + fileName + " does not found.");
         }

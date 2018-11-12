@@ -24,9 +24,12 @@ public class PostgresMovieLandDataSource implements MovieLandDataSource {
         Yaml yaml = new Yaml();
         DataSourceConfiguration configuration;
 
-        InputStream inputStream = new InputStreamFromFileFactory().
-                getInputStreamFromFile(configFileName);
-        configuration = yaml.loadAs(inputStream, DataSourceConfiguration.class);
+        try (InputStream inputStream = new InputStreamFromFileFactory().
+                getInputStreamFromFile(configFileName)) {
+            configuration = yaml.loadAs(inputStream, DataSourceConfiguration.class);
+        } catch (IOException e) {
+            throw new IOException(e);
+        }
 
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(configuration.getDriverClassName());

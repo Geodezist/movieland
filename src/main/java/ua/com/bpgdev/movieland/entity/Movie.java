@@ -66,4 +66,23 @@ public class Movie {
     public void setPicturePath(String picturePath) {
         this.picturePath = picturePath;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Movie movie = (Movie) obj;
+        return id == movie.id &&
+                nameRussian != null && nameRussian.equals(movie.nameRussian) &&
+                nameNative != null && nameNative.equals(movie.nameNative) &&
+                yearOfRelease == movie.yearOfRelease &&
+                rating == movie.rating &&
+                price != null && price.equals(movie.price) &&
+                picturePath != null && picturePath.equals(movie.picturePath)
+        ;
+    }
 }
