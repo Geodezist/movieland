@@ -167,3 +167,21 @@ ALTER TABLE movieland.ref_movie_country
  ADD CONSTRAINT rmccy_genre_fk           FOREIGN KEY (country_id) 
      REFERENCES movieland.d_country      (id)
 ;
+
+CREATE OR REPLACE VIEW movieland.v_movie_three_random AS
+  SELECT moie.id
+       , moie.title
+       , moie.title_original
+       , moie.release_year
+       , moie.rating
+       , moie.price
+       , mepr.poster_url
+   FROM movieland.movie               moie
+        JOIN
+           movieland.movie_poster        mepr
+           ON mepr.movie_id  = moie.id
+  ORDER BY RANDOM()
+  LIMIT 3;
+
+ALTER TABLE movieland.v_movie_three_random
+  OWNER TO movieland;

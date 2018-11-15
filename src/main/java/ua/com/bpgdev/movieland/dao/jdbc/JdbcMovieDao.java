@@ -24,6 +24,15 @@ public class JdbcMovieDao implements MovieDao {
             "FROM movie moie\n" +
             "       JOIN movie_poster mepr\n" +
             "         ON moie.id = mepr.movie_id;";
+    private static final String SQL_GET_THREE_RANDOM_MOVIES = "SELECT\n" +
+            "       vmtm.id,\n" +
+            "       vmtm.title,\n" +
+            "       vmtm.title_original,\n" +
+            "       vmtm.release_year,\n" +
+            "       vmtm.rating,\n" +
+            "       vmtm.price,\n" +
+            "       vmtm.poster_url\n" +
+            "FROM v_movie_three_random vmtm";
 
     private DataSource dataSource;
     private JdbcTemplate jdbcTemplate;
@@ -41,6 +50,10 @@ public class JdbcMovieDao implements MovieDao {
         return jdbcTemplate.query(SQL_GET_ALL_MOVIES, MOVIE_ROW_MAPPER);
     }
 
+    @Override
+    public List<Movie> getThreeRandom() {
+        return  jdbcTemplate.query(SQL_GET_THREE_RANDOM_MOVIES, MOVIE_ROW_MAPPER);
+    }
 
     public static RowMapper<Movie> getMovieRowMapper() {
         return MOVIE_ROW_MAPPER;

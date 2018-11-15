@@ -21,4 +21,10 @@ public class MovieController {
     public List<Movie> getAll(){
         return movieService.getAll();
     }
+
+    @RequestMapping(path = "/movie/random", method=RequestMethod.GET)
+    public List<Movie> getThreeRandom(){
+        return  movieService.getThreeRandom();
+    }
+
 }
