@@ -2,13 +2,17 @@ package ua.com.bpgdev.movieland.dao.jdbc;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
-import ua.com.bpgdev.movieland.dao.MovieDao;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 import ua.com.bpgdev.movieland.dao.datasource.MovieLandDataSource;
-import ua.com.bpgdev.movieland.dao.datasource.PostgresMovieLandDataSource;
 import ua.com.bpgdev.movieland.entity.Movie;
+import ua.com.bpgdev.movieland.testutil.Config;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +21,18 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = Config.class)
+@TestPropertySource("classpath:property/sqls.properties")
 public class JdbcMovieDaoTest {
 
-    private MovieDao movieDao;
-    private MovieDao mockMovieDao;
+    @Value("${sql.sql_get_all_movies}")
+    private String sqlGetAllMovies;
+    @Value("${sql.sql_get_random_movies}")
+    private String sqlGetRandomMovies;
+
+    private JdbcMovieDao movieDao;
+    private JdbcMovieDao mockMovieDao;
 
 
     @Before
@@ -57,30 +69,29 @@ public class JdbcMovieDaoTest {
         movie.setPicturePath("https://images-na.ssl-images-amazon.com/images/M/MV5BNWIwODRlZTUtY2U3ZS00Yzg1LWJhNzYtMmZiYmEyNmU1NjMzXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1._SY209_CR2,0,140,209_.jpg");
         expectedMovies.add(movie);
 
+        String dataSourceConfigFile = "/property/application.properties";
+        MovieLandDataSource movieLandDataSource = new MovieLandDataSource(dataSourceConfigFile);
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(movieLandDataSource.getDataSource());
+
         JdbcTemplate mockJdbcTemplate = mock(JdbcTemplate.class);
-        when(mockJdbcTemplate.query(JdbcMovieDao.getSqlGetAllMovies(), JdbcMovieDao.getMovieRowMapper())).
+        mockMovieDao = new JdbcMovieDao(mockJdbcTemplate);
+        when(mockJdbcTemplate.query(mockMovieDao.getSqlGetAllMovies(), JdbcMovieDao.getMovieRowMapper())).
                 thenReturn(expectedMovies);
 
-        String dataSourceConfigFile = "/src/main/resources/property/datasource-property.yml";
-        MovieLandDataSource movieLandDataSource = new PostgresMovieLandDataSource(
-                dataSourceConfigFile);
-
-        try {
-            mockMovieDao = new JdbcMovieDao(movieLandDataSource);
-            ((JdbcMovieDao) mockMovieDao).setJdbcTemplate(mockJdbcTemplate);
-
-            movieDao = new JdbcMovieDao(movieLandDataSource);
-            ((JdbcMovieDao) movieDao).init();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        movieDao = new JdbcMovieDao(jdbcTemplate);
+        ReflectionTestUtils.setField(movieDao, "sqlGetAllMovies", sqlGetAllMovies);
+        ReflectionTestUtils.setField(movieDao, "sqlGetRandomMovies", sqlGetRandomMovies);
     }
 
     @Test
     public void testGetAll() {
+        assertEquals(3, mockMovieDao.getAll().size());
+    }
+
+    @Test
+    public void testIGetAll() {
         List<Movie> expectedMovies = mockMovieDao.getAll();
         List<Movie> actualMovies = movieDao.getAll();
-
 
         assertEquals(3, mockMovieDao.getAll().size());
         assertEquals(24, movieDao.getAll().size());
@@ -90,8 +101,9 @@ public class JdbcMovieDaoTest {
         }
     }
 
+
     @Test
-    public void testGetThreeRandom() {
+    public void testIGetThreeRandom() {
         List<Movie> actualMoviesFirstTry = movieDao.getThreeRandom();
         List<Movie> actualMoviesSecondTry = movieDao.getThreeRandom();
 

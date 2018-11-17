@@ -1,4 +1,0 @@
-url: jdbc:postgresql://localhost:5432/movieland
-username: movieland
-password: movieland
-driverClassName: org.postgresql.ds.PGPoolingDataSource

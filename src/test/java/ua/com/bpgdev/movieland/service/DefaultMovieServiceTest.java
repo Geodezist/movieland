@@ -2,24 +2,36 @@ package ua.com.bpgdev.movieland.service;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 import ua.com.bpgdev.movieland.dao.MovieDao;
 import ua.com.bpgdev.movieland.dao.datasource.MovieLandDataSource;
-import ua.com.bpgdev.movieland.dao.datasource.PostgresMovieLandDataSource;
 import ua.com.bpgdev.movieland.dao.jdbc.JdbcMovieDao;
 import ua.com.bpgdev.movieland.entity.Movie;
+import ua.com.bpgdev.movieland.testutil.Config;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = Config.class)
+@TestPropertySource(locations = "classpath:property/sqls.properties")
 public class DefaultMovieServiceTest {
+    @Value("${sql.sql_get_all_movies}")
+    private String sqlGetAllMovies;
+    @Value("${sql.sql_get_random_movies}")
+    private String sqlGetRandomMovies;
+
     private MovieDao mockMovieDao;
     private List<Movie> expectedMovies;
 
@@ -68,11 +80,10 @@ public class DefaultMovieServiceTest {
 
         mockMovieDao = mock(JdbcMovieDao.class);
         when(mockMovieDao.getAll()).thenReturn(expectedMovies);
-
     }
 
     @Test
-    public void getAll() {
+    public void testGetAll() {
         MovieService movieService = new DefaultMovieService(mockMovieDao);
         List<Movie> actualMovies = movieService.getAll();
 
@@ -83,16 +94,19 @@ public class DefaultMovieServiceTest {
     }
 
     @Test
-    public void getThreeRandom() throws IOException {
-        PostgresMovieLandDataSource postgresMovieLandDataSource = new PostgresMovieLandDataSource();
-        MovieDao movieDao = new JdbcMovieDao(postgresMovieLandDataSource);
-        ((JdbcMovieDao) movieDao).init();
+    public void testIGetThreeRandom(){
+        String dataSourceConfigFile = "/property/application.properties";
+        MovieLandDataSource movieLandDataSource = new MovieLandDataSource(dataSourceConfigFile);
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(movieLandDataSource.getDataSource());
+        MovieDao movieDao = new JdbcMovieDao(jdbcTemplate);
         MovieService movieService = new DefaultMovieService(movieDao);
+
+        ReflectionTestUtils.setField(movieDao, "sqlGetAllMovies", sqlGetAllMovies);
+        ReflectionTestUtils.setField(movieDao, "sqlGetRandomMovies", sqlGetRandomMovies);
 
         List<Movie> actualMoviesFirstTry = movieService.getThreeRandom();
         List<Movie> actualMoviesSecondTry = movieService.getThreeRandom();
 
         assertNotEquals(actualMoviesFirstTry, actualMoviesSecondTry);
-
     }
 }

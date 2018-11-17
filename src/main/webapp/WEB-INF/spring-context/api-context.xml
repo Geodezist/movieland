@@ -13,14 +13,4 @@
     <context:component-scan base-package="ua.com.bpgdev.movieland.web.controller"/>
     <mvc:annotation-driven/>
 
-    <bean id="movieLandDataSource" class="ua.com.bpgdev.movieland.dao.datasource.PostgresMovieLandDataSource"/>
-
-    <bean id="jdbcMovieDao" class="ua.com.bpgdev.movieland.dao.jdbc.JdbcMovieDao" init-method="init">
-        <constructor-arg ref="movieLandDataSource"/>
-    </bean>
-
-    <bean id="movieService" class="ua.com.bpgdev.movieland.service.DefaultMovieService">
-        <constructor-arg ref="jdbcMovieDao"/>
-    </bean>
-
 </beans>

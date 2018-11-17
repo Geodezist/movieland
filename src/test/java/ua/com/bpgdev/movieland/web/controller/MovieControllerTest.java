@@ -7,10 +7,10 @@ import static org.junit.Assert.*;
 public class MovieControllerTest {
 
     @Test
-    public void getAll() {
+    public void testGetAll() {
     }
 
     @Test
-    public void getThreeRandom() {
+    public void testGetThreeRandom() {
     }
 }
