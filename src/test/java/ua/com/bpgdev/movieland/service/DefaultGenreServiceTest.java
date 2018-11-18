@@ -1,4 +1,4 @@
-package ua.com.bpgdev.movieland.dao.jdbc;
+package ua.com.bpgdev.movieland.service;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,15 +15,13 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(locations = "classpath:property/root-context-test.xml")
-public class JdbcGenreDaoTest {
-
+public class DefaultGenreServiceTest {
     @Autowired
     private GenreDao jdbcGenreDao;
 
     @Test
-    public void testIGetAll() {
+    public void testGetAll() {
         List<Genre> expectedGenres = new ArrayList<>();
-
         Genre expectedGenre = new Genre(1, "драма");
         expectedGenres.add(expectedGenre);
         expectedGenre = new Genre(2, "криминал");
@@ -31,7 +29,9 @@ public class JdbcGenreDaoTest {
         expectedGenre = new Genre(3, "фэнтези");
         expectedGenres.add(expectedGenre);
 
-        List<Genre> actualGenres = jdbcGenreDao.getAll();
+        DefaultGenreService genreService = new DefaultGenreService(jdbcGenreDao);
+        List<Genre> actualGenres = genreService.getAll();
+
         assertEquals(15, actualGenres.size());
         for (Genre genre : expectedGenres) {
             actualGenres.remove(genre);

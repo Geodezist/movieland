@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import ua.com.bpgdev.movieland.dao.MovieDao;
 import ua.com.bpgdev.movieland.dao.jdbc.JdbcMovieDao;
@@ -20,7 +19,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(locations = "classpath:property/applicationContext-test.xml")
+@ContextConfiguration(locations = "classpath:property/root-context-test.xml")
 public class DefaultMovieServiceTest {
 
     @Autowired
@@ -94,6 +93,8 @@ public class DefaultMovieServiceTest {
         List<Movie> actualMoviesFirstTry = movieService.getThreeRandom();
         List<Movie> actualMoviesSecondTry = movieService.getThreeRandom();
 
+        assertEquals(3,actualMoviesFirstTry.size());
+        assertEquals(3,actualMoviesSecondTry.size());
         assertNotEquals(actualMoviesFirstTry, actualMoviesSecondTry);
     }
 }

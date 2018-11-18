@@ -1,3 +1,5 @@
+DROP ALL OBJECTS;
+
 CREATE TABLE user_account
 ( id                                   SERIAL        NOT NULL PRIMARY KEY,
   email                                VARCHAR       NOT NULL,
@@ -39,11 +41,11 @@ ALTER TABLE ref_user_account_role
 CREATE UNIQUE INDEX ruat_pk_uindex     ON ref_user_account_role (user_id, user_role_id)
 ;
 ALTER TABLE ref_user_account_role
- ADD CONSTRAINT ruat_urat_fk           FOREIGN KEY (user_id) 
+ ADD CONSTRAINT ruat_urat_fk           FOREIGN KEY (user_id)
      REFERENCES user_account (id)
 ;
 ALTER TABLE ref_user_account_role
- ADD CONSTRAINT ruat_urre_fk           FOREIGN KEY (user_role_id) 
+ ADD CONSTRAINT ruat_urre_fk           FOREIGN KEY (user_role_id)
      REFERENCES user_role    (id)
 ;
 
@@ -101,7 +103,7 @@ ALTER TABLE review
 ;
 
 
-CREATE TABLE movie_poster
+CREATE TABLE  movie_poster
 ( id                                   SERIAL        NOT NULL PRIMARY KEY,
   movie_id                             INT           NOT NULL,
   poster_url                           VARCHAR       NOT NULL
@@ -126,11 +128,11 @@ ALTER TABLE ref_movie_genre
 CREATE UNIQUE INDEX rmre_pk_uindex     ON ref_movie_genre (movie_id, genre_id)
 ;
 ALTER TABLE ref_movie_genre
- ADD CONSTRAINT rmre_movie_fk           FOREIGN KEY (movie_id) 
+ ADD CONSTRAINT rmre_movie_fk           FOREIGN KEY (movie_id)
      REFERENCES movie        (id)
 ;
 ALTER TABLE ref_movie_genre
- ADD CONSTRAINT rmre_genre_fk           FOREIGN KEY (genre_id) 
+ ADD CONSTRAINT rmre_genre_fk           FOREIGN KEY (genre_id)
      REFERENCES d_genre      (id)
 ;
 
@@ -146,11 +148,11 @@ ALTER TABLE ref_movie_country
 CREATE UNIQUE INDEX rmcy_pk_uindex     ON ref_movie_country (movie_id, country_id)
 ;
 ALTER TABLE ref_movie_country
- ADD CONSTRAINT rmcy_movie_fk           FOREIGN KEY (movie_id) 
+ ADD CONSTRAINT rmcy_movie_fk           FOREIGN KEY (movie_id)
      REFERENCES movie        (id)
 ;
 ALTER TABLE ref_movie_country
- ADD CONSTRAINT rmccy_genre_fk           FOREIGN KEY (country_id) 
+ ADD CONSTRAINT rmccy_genre_fk           FOREIGN KEY (country_id)
      REFERENCES d_country      (id)
 ;
 

@@ -18,7 +18,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(locations = "classpath:property/applicationContext-test.xml")
+@ContextConfiguration(locations = "classpath:property/root-context-test.xml")
 public class JdbcMovieDaoTest {
 
     @Autowired

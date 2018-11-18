@@ -1,4 +1,3 @@
-SET search_path TO movieland;
 INSERT INTO d_country (title) VALUES ('Абхазия');
 INSERT INTO d_country (title) VALUES ('Австралия');
 INSERT INTO d_country (title) VALUES ('Австрия');
