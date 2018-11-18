@@ -3,17 +3,12 @@ package ua.com.bpgdev.movieland.service;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.util.ReflectionTestUtils;
 import ua.com.bpgdev.movieland.dao.MovieDao;
-import ua.com.bpgdev.movieland.dao.datasource.MovieLandDataSource;
 import ua.com.bpgdev.movieland.dao.jdbc.JdbcMovieDao;
 import ua.com.bpgdev.movieland.entity.Movie;
-import ua.com.bpgdev.movieland.testutil.Config;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -24,13 +19,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = Config.class)
-@TestPropertySource(locations = "classpath:property/sqls.properties")
+@ContextConfiguration(locations = "classpath:property/applicationContext-test.xml")
 public class DefaultMovieServiceTest {
-    @Value("${sql.sql_get_all_movies}")
-    private String sqlGetAllMovies;
-    @Value("${sql.sql_get_random_movies}")
-    private String sqlGetRandomMovies;
+
+    @Autowired
+    private JdbcMovieDao jdbcMovieDao;
 
     private MovieDao mockMovieDao;
     private List<Movie> expectedMovies;
@@ -94,15 +87,8 @@ public class DefaultMovieServiceTest {
     }
 
     @Test
-    public void testIGetThreeRandom(){
-        String dataSourceConfigFile = "/property/application.properties";
-        MovieLandDataSource movieLandDataSource = new MovieLandDataSource(dataSourceConfigFile);
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(movieLandDataSource.getDataSource());
-        MovieDao movieDao = new JdbcMovieDao(jdbcTemplate);
-        MovieService movieService = new DefaultMovieService(movieDao);
-
-        ReflectionTestUtils.setField(movieDao, "sqlGetAllMovies", sqlGetAllMovies);
-        ReflectionTestUtils.setField(movieDao, "sqlGetRandomMovies", sqlGetRandomMovies);
+    public void testIGetThreeRandom() {
+        MovieService movieService = new DefaultMovieService(jdbcMovieDao);
 
         List<Movie> actualMoviesFirstTry = movieService.getThreeRandom();
         List<Movie> actualMoviesSecondTry = movieService.getThreeRandom();

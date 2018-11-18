@@ -22,6 +22,7 @@
         <junit.version>4.12</junit.version>
         <spring-test.version>5.1.2.RELEASE</spring-test.version>
         <mockito-all.version>1.10.19</mockito-all.version>
+        <h2.version>1.4.197</h2.version>
     </properties>
 
     <build>
@@ -105,5 +106,20 @@
             <version>${mockito-all.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${javax.servlet-api.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 </project>

@@ -3,15 +3,11 @@ package ua.com.bpgdev.movieland.dao.jdbc;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.util.ReflectionTestUtils;
-import ua.com.bpgdev.movieland.dao.datasource.MovieLandDataSource;
 import ua.com.bpgdev.movieland.entity.Movie;
-import ua.com.bpgdev.movieland.testutil.Config;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -22,18 +18,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = Config.class)
-@TestPropertySource("classpath:property/sqls.properties")
+@ContextConfiguration(locations = "classpath:property/applicationContext-test.xml")
 public class JdbcMovieDaoTest {
 
-    @Value("${sql.sql_get_all_movies}")
-    private String sqlGetAllMovies;
-    @Value("${sql.sql_get_random_movies}")
-    private String sqlGetRandomMovies;
-
-    private JdbcMovieDao movieDao;
+    @Autowired
+    private JdbcMovieDao jdbcMovieDao;
     private JdbcMovieDao mockMovieDao;
-
 
     @Before
     public void before() {
@@ -69,18 +59,10 @@ public class JdbcMovieDaoTest {
         movie.setPicturePath("https://images-na.ssl-images-amazon.com/images/M/MV5BNWIwODRlZTUtY2U3ZS00Yzg1LWJhNzYtMmZiYmEyNmU1NjMzXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1._SY209_CR2,0,140,209_.jpg");
         expectedMovies.add(movie);
 
-        String dataSourceConfigFile = "/property/application.properties";
-        MovieLandDataSource movieLandDataSource = new MovieLandDataSource(dataSourceConfigFile);
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(movieLandDataSource.getDataSource());
-
         JdbcTemplate mockJdbcTemplate = mock(JdbcTemplate.class);
         mockMovieDao = new JdbcMovieDao(mockJdbcTemplate);
         when(mockJdbcTemplate.query(mockMovieDao.getSqlGetAllMovies(), JdbcMovieDao.getMovieRowMapper())).
                 thenReturn(expectedMovies);
-
-        movieDao = new JdbcMovieDao(jdbcTemplate);
-        ReflectionTestUtils.setField(movieDao, "sqlGetAllMovies", sqlGetAllMovies);
-        ReflectionTestUtils.setField(movieDao, "sqlGetRandomMovies", sqlGetRandomMovies);
     }
 
     @Test
@@ -91,10 +73,10 @@ public class JdbcMovieDaoTest {
     @Test
     public void testIGetAll() {
         List<Movie> expectedMovies = mockMovieDao.getAll();
-        List<Movie> actualMovies = movieDao.getAll();
+        List<Movie> actualMovies = jdbcMovieDao.getAll();
 
         assertEquals(3, mockMovieDao.getAll().size());
-        assertEquals(24, movieDao.getAll().size());
+        assertEquals(24, jdbcMovieDao.getAll().size());
 
         for (int index = 0; index < expectedMovies.size() - 1; index++) {
             assertEquals(expectedMovies.get(index), actualMovies.get(index));
@@ -104,8 +86,8 @@ public class JdbcMovieDaoTest {
 
     @Test
     public void testIGetThreeRandom() {
-        List<Movie> actualMoviesFirstTry = movieDao.getThreeRandom();
-        List<Movie> actualMoviesSecondTry = movieDao.getThreeRandom();
+        List<Movie> actualMoviesFirstTry = jdbcMovieDao.getThreeRandom();
+        List<Movie> actualMoviesSecondTry = jdbcMovieDao.getThreeRandom();
 
         int matchedMovieCount = 0;
         for (int index = 0; index < actualMoviesFirstTry.size() - 1; index++) {

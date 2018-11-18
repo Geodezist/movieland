@@ -1,5 +1,5 @@
 <configuration>
-    <property file="src\test\resources\property\logback.properties"/>
+    <property file="src\test\resources\property\logback-test.properties"/>
 
     <appender name="allToConsole" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
