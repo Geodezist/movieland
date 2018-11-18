@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import ua.com.bpgdev.movieland.dao.MovieDao;
 import ua.com.bpgdev.movieland.dao.jdbc.JdbcMovieDao;
 import ua.com.bpgdev.movieland.entity.Movie;
@@ -18,7 +19,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @ContextConfiguration(locations = "classpath:property/applicationContext-test.xml")
 public class DefaultMovieServiceTest {
 
