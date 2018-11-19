@@ -1,6 +1,7 @@
 package ua.com.bpgdev.movieland.entity;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public class Movie {
     private int id;
@@ -84,5 +85,23 @@ public class Movie {
                 price != null && price.equals(movie.price) &&
                 picturePath != null && picturePath.equals(movie.picturePath)
         ;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nameRussian, nameNative, yearOfRelease, rating, price, picturePath);
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "id=" + id +
+                ", nameRussian='" + nameRussian + '\'' +
+                ", nameNative='" + nameNative + '\'' +
+                ", yearOfRelease=" + yearOfRelease +
+                ", rating=" + rating +
+                ", price=" + price +
+                ", picturePath='" + picturePath + '\'' +
+                '}';
     }
 }

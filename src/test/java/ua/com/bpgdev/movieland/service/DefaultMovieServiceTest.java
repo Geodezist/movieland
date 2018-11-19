@@ -2,24 +2,29 @@ package ua.com.bpgdev.movieland.service;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 import ua.com.bpgdev.movieland.dao.MovieDao;
-import ua.com.bpgdev.movieland.dao.datasource.MovieLandDataSource;
-import ua.com.bpgdev.movieland.dao.datasource.PostgresMovieLandDataSource;
 import ua.com.bpgdev.movieland.dao.jdbc.JdbcMovieDao;
 import ua.com.bpgdev.movieland.entity.Movie;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@RunWith(SpringRunner.class)
+@ContextConfiguration(locations = "classpath:property/applicationContext-test.xml")
 public class DefaultMovieServiceTest {
+
+    @Autowired
+    private JdbcMovieDao jdbcMovieDao;
+
     private MovieDao mockMovieDao;
     private List<Movie> expectedMovies;
 
@@ -68,11 +73,10 @@ public class DefaultMovieServiceTest {
 
         mockMovieDao = mock(JdbcMovieDao.class);
         when(mockMovieDao.getAll()).thenReturn(expectedMovies);
-
     }
 
     @Test
-    public void getAll() {
+    public void testGetAll() {
         MovieService movieService = new DefaultMovieService(mockMovieDao);
         List<Movie> actualMovies = movieService.getAll();
 
@@ -83,16 +87,14 @@ public class DefaultMovieServiceTest {
     }
 
     @Test
-    public void getThreeRandom() throws IOException {
-        PostgresMovieLandDataSource postgresMovieLandDataSource = new PostgresMovieLandDataSource();
-        MovieDao movieDao = new JdbcMovieDao(postgresMovieLandDataSource);
-        ((JdbcMovieDao) movieDao).init();
-        MovieService movieService = new DefaultMovieService(movieDao);
+    public void testIGetThreeRandom() {
+        MovieService movieService = new DefaultMovieService(jdbcMovieDao);
 
         List<Movie> actualMoviesFirstTry = movieService.getThreeRandom();
         List<Movie> actualMoviesSecondTry = movieService.getThreeRandom();
 
+        assertEquals(3,actualMoviesFirstTry.size());
+        assertEquals(3,actualMoviesSecondTry.size());
         assertNotEquals(actualMoviesFirstTry, actualMoviesSecondTry);
-
     }
 }
