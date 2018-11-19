@@ -14,7 +14,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(locations = "classpath:property/root-context-test.xml")
+@ContextConfiguration(locations = "classpath:property/applicationContext-test.xml")
 public class JdbcGenreDaoTest {
 
     @Autowired

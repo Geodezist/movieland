@@ -10,7 +10,7 @@
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>/WEB-INF/spring-context/root-context.xml</param-value>
+        <param-value>/WEB-INF/spring-context/applicationContext.xml</param-value>
     </context-param>
 
     <servlet>
@@ -18,7 +18,7 @@
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>/WEB-INF/spring-context/api-context.xml</param-value>
+            <param-value>/WEB-INF/spring-context/apiContext.xml</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
