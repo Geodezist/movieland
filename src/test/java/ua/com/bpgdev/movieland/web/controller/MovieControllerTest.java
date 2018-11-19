@@ -47,7 +47,6 @@ public class MovieControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andReturn();
-
         String actualJson = mvcResult.getResponse().getContentAsString();
 
         ObjectMapper mapper = new ObjectMapper();
@@ -75,7 +74,25 @@ public class MovieControllerTest {
         };
         List<Movie> actualMovies = mapper.readValue(actualJson, listMovies);
 
-
         assertEquals(3, actualMovies.size());
+    }
+
+    @Test
+    public void testGetByGenre() throws Exception {
+        int genreId = 2;
+        MvcResult mvcResult = mockMvc
+                .perform(get("/movie/genre/" + genreId))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andReturn();
+        String actualJson = mvcResult.getResponse().getContentAsString();
+
+        ObjectMapper mapper = new ObjectMapper();
+        TypeReference listMovies = new TypeReference<List<Movie>>() {
+        };
+        List<Movie> actualMovies = mapper.readValue(actualJson, listMovies);
+        List<Movie> expectedMovies = jdbcMovieDao.getByGenreId(genreId);
+        assertEquals(7, actualMovies.size());
+        assertEquals(expectedMovies, actualMovies);
     }
 }

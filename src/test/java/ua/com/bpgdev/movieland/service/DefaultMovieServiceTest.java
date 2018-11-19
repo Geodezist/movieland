@@ -21,16 +21,17 @@ import static org.mockito.Mockito.when;
 @RunWith(SpringRunner.class)
 @ContextConfiguration(locations = "classpath:property/applicationContext-test.xml")
 public class DefaultMovieServiceTest {
-
     @Autowired
     private JdbcMovieDao jdbcMovieDao;
 
-    private MovieDao mockMovieDao;
-    private List<Movie> expectedMovies;
+    private List<Movie> expectedMoviesGetAll;
+    private List<Movie> expectedMoviesByGenre;
 
     @Before
     public void before() {
-        expectedMovies = new ArrayList<>();
+        expectedMoviesGetAll = new ArrayList<>();
+        expectedMoviesByGenre = new ArrayList<>();
+
         Movie movie = new Movie();
         movie.setId(1);
         movie.setNameRussian("Побег из Шоушенка");
@@ -39,7 +40,8 @@ public class DefaultMovieServiceTest {
         movie.setRating(8.9d);
         movie.setPrice(BigDecimal.valueOf(123.45d));
         movie.setPicturePath("https://images-na.ssl-images-amazon.com/images/M/MV5BODU4MjU4NjIwNl5BMl5BanBnXkFtZTgwMDU2MjEyMDE@._V1._SY209_CR0,0,140,209_.jpg");
-        expectedMovies.add(movie);
+        expectedMoviesGetAll.add(movie);
+        expectedMoviesByGenre.add(movie);
 
         movie = new Movie();
         movie.setId(2);
@@ -49,7 +51,9 @@ public class DefaultMovieServiceTest {
         movie.setRating(8.9d);
         movie.setPrice(BigDecimal.valueOf(134.67d));
         movie.setPicturePath("https://images-na.ssl-images-amazon.com/images/M/MV5BMTUxMzQyNjA5MF5BMl5BanBnXkFtZTYwOTU2NTY3._V1._SY209_CR0,0,140,209_.jpg");
-        expectedMovies.add(movie);
+        expectedMoviesGetAll.add(movie);
+        expectedMoviesByGenre.add(movie);
+
 
         movie = new Movie();
         movie.setId(3);
@@ -59,7 +63,7 @@ public class DefaultMovieServiceTest {
         movie.setRating(8.6d);
         movie.setPrice(BigDecimal.valueOf(200.60d));
         movie.setPicturePath("https://images-na.ssl-images-amazon.com/images/M/MV5BNWIwODRlZTUtY2U3ZS00Yzg1LWJhNzYtMmZiYmEyNmU1NjMzXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1._SY209_CR2,0,140,209_.jpg");
-        expectedMovies.add(movie);
+        expectedMoviesGetAll.add(movie);
 
         movie = new Movie();
         movie.setId(4);
@@ -69,18 +73,17 @@ public class DefaultMovieServiceTest {
         movie.setRating(8.7d);
         movie.setPrice(BigDecimal.valueOf(150.50d));
         movie.setPicturePath("");
-        expectedMovies.add(movie);
-
-        mockMovieDao = mock(JdbcMovieDao.class);
-        when(mockMovieDao.getAll()).thenReturn(expectedMovies);
+        expectedMoviesGetAll.add(movie);
     }
 
     @Test
     public void testGetAll() {
-        MovieService movieService = new DefaultMovieService(mockMovieDao);
-        List<Movie> actualMovies = movieService.getAll();
+        MovieDao mockMovieDaoGetAll = mock(JdbcMovieDao.class);
+        when(mockMovieDaoGetAll.getAll()).thenReturn(expectedMoviesGetAll);
+        MovieService movieServiceGetAll = new DefaultMovieService(mockMovieDaoGetAll);
+        List<Movie> actualMovies = movieServiceGetAll.getAll();
 
-        assertEquals(expectedMovies.size(), actualMovies.size());
+        assertEquals(expectedMoviesGetAll.size(), actualMovies.size());
         for (int index = 0; index < actualMovies.size(); index++) {
             assertEquals(index + 1, actualMovies.get(index).getId());
         }
@@ -97,4 +100,30 @@ public class DefaultMovieServiceTest {
         assertEquals(3,actualMoviesSecondTry.size());
         assertNotEquals(actualMoviesFirstTry, actualMoviesSecondTry);
     }
+
+    @Test
+    public void testGetByGenreId(){
+        int genreId = 2;
+        MovieDao mockMovieDaoGetByGenreId = mock(JdbcMovieDao.class);
+        when(mockMovieDaoGetByGenreId.getByGenreId(genreId)).thenReturn(expectedMoviesByGenre);
+        MovieService movieServiceGetByGenreId = new DefaultMovieService(mockMovieDaoGetByGenreId);
+        List<Movie> actualMoviesByGenre = movieServiceGetByGenreId.getByGenreId(genreId);
+
+        assertEquals(expectedMoviesByGenre, actualMoviesByGenre);
+    }
+
+    @Test
+    public void testIGetByGenreId(){
+        int genreId = 2;
+        MovieService movieService = new DefaultMovieService(jdbcMovieDao);
+        List<Movie> actualMoviesByGenre = movieService.getByGenreId(genreId);
+
+        int moviesCount = 7;
+        assertEquals(moviesCount,actualMoviesByGenre.size());
+        for (Movie expectedMovie : expectedMoviesByGenre) {
+            actualMoviesByGenre.remove(expectedMovie);
+        }
+        assertEquals(moviesCount - expectedMoviesByGenre.size(), actualMoviesByGenre.size());
+    }
+
 }
