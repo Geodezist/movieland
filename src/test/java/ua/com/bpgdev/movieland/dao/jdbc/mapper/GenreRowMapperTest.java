@@ -1,11 +1,8 @@
 package ua.com.bpgdev.movieland.dao.jdbc.mapper;
 
-import org.junit.Before;
 import org.junit.Test;
 import ua.com.bpgdev.movieland.entity.Genre;
-import ua.com.bpgdev.movieland.entity.Movie;
 
-import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 

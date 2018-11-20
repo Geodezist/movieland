@@ -10,11 +10,14 @@ import ua.com.bpgdev.movieland.entity.Movie;
 import java.util.List;
 
 public class JdbcMovieDao implements MovieDao {
-    private static final RowMapper<Movie> MOVIE_ROW_MAPPER = new MovieRowMapper();
+    public static final RowMapper<Movie> MOVIE_ROW_MAPPER = new MovieRowMapper();
     @Value("${sql.sql_get_all_movies}")
     private String sqlGetAllMovies;
     @Value("${sql.sql_get_random_movies}")
     private String sqlGetRandomMovies;
+    @Value(("${sql.sql_get_movies_by_genre_id}"))
+    private String sqlGetMoviesByGenreId;
+
     private JdbcTemplate jdbcTemplate;
 
     public JdbcMovieDao(JdbcTemplate jdbcTemplate) {
@@ -31,15 +34,16 @@ public class JdbcMovieDao implements MovieDao {
         return jdbcTemplate.query(sqlGetRandomMovies, MOVIE_ROW_MAPPER);
     }
 
-    public static RowMapper<Movie> getMovieRowMapper() {
-        return MOVIE_ROW_MAPPER;
+    @Override
+    public List<Movie> getByGenreId(int genreId) {
+        return jdbcTemplate.query(sqlGetMoviesByGenreId, MOVIE_ROW_MAPPER, genreId);
     }
 
     public String getSqlGetAllMovies() {
         return sqlGetAllMovies;
     }
 
-    public JdbcTemplate getJdbcTemplate() {
-        return jdbcTemplate;
+    public String getSqlGetMoviesByGenreId() {
+        return sqlGetMoviesByGenreId;
     }
 }
