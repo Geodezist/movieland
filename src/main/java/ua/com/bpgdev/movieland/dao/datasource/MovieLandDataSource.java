@@ -15,7 +15,7 @@ public class MovieLandDataSource {
 
     public MovieLandDataSource(){
         LOGGER.debug("Creating object with default configuration file");
-        HikariConfig hikariConfig = new HikariConfig("/property/application.properties");
+        HikariConfig hikariConfig = new HikariConfig("/property/datasource.properties");
         hikariDataSource = new HikariDataSource(hikariConfig);
     }
 

@@ -7,10 +7,11 @@
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd
-        http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
+       http://www.springframework.org/schema/jdbc
+       http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
     <context:component-scan base-package="ua.com.bpgdev.movieland.dao"/>
-    <context:property-placeholder location="classpath:property/sqls-test.properties"/>
+    <context:property-placeholder location="classpath:property/application-test.properties"/>
 
     <jdbc:embedded-database id="dataSource" type="H2">
         <jdbc:script location="classpath:db-test/create_movieland-test.sql"/>
@@ -29,11 +30,15 @@
         <constructor-arg ref="jdbcTemplate"/>
     </bean>
 
+    <bean id="cacheGenreDao" class="ua.com.bpgdev.movieland.dao.cache.CacheGenreDao">
+        <constructor-arg ref="jdbcGenreDao"/>
+    </bean>
+
     <bean id="movieService" class="ua.com.bpgdev.movieland.service.DefaultMovieService">
         <constructor-arg ref="jdbcMovieDao"/>
     </bean>
 
     <bean id="genreService" class="ua.com.bpgdev.movieland.service.DefaultGenreService">
-        <constructor-arg ref="jdbcGenreDao"/>
+        <constructor-arg ref="cacheGenreDao"/>
     </bean>
 </beans>
