@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+import ua.com.bpgdev.movieland.common.ParameterInfo;
+import ua.com.bpgdev.movieland.common.SortingField;
+import ua.com.bpgdev.movieland.common.SortingOrder;
 import ua.com.bpgdev.movieland.entity.Movie;
 
 import java.math.BigDecimal;
@@ -93,6 +96,50 @@ public class JdbcMovieDaoTest {
     }
 
     @Test
+    public void testIGetAllWithRatingOrder() {
+        ParameterInfo parameterInfo = new ParameterInfo();
+        parameterInfo.getParameters().put(SortingField.RATING, SortingOrder.DESC);
+        List<Movie> actualSortedMovies = jdbcMovieDao.getAll(parameterInfo);
+        List<Movie> expectedMovies = jdbcMovieDao.getAll();
+
+        expectedMovies.sort(Movie.MOVIE_RATING_DESCENDING_COMPARATOR);
+
+        assertEquals(expectedMovies, actualSortedMovies);
+    }
+
+    @Test
+    public void testIGetAllWithPriceOrderAscending() {
+        ParameterInfo parameterInfo = new ParameterInfo();
+        parameterInfo.getParameters().put(SortingField.PRICE, SortingOrder.ASC);
+        List<Movie> actualSortedMovies = jdbcMovieDao.getAll(parameterInfo);
+        List<Movie> expectedMovies = jdbcMovieDao.getAll();
+
+        expectedMovies.sort(Movie.MOVIE_PRICE_ASCENDING_COMPARATOR);
+
+        assertEquals(expectedMovies, actualSortedMovies);
+    }
+
+    @Test
+    public void testIGetAllWithPriceOrderDescending() {
+        ParameterInfo parameterInfo = new ParameterInfo();
+        parameterInfo.getParameters().put(SortingField.PRICE, SortingOrder.DESC);
+        List<Movie> actualSortedMovies = jdbcMovieDao.getAll(parameterInfo);
+        List<Movie> expectedMovies = jdbcMovieDao.getAll();
+
+        expectedMovies.sort(Movie.MOVIE_PRICE_DESCENDING_COMPARATOR);
+
+        assertEquals(expectedMovies, actualSortedMovies);
+    }
+
+
+    @Test(expected = RuntimeException.class)
+    public void testIGetAllWithIllegalRatingOrderValue() {
+        ParameterInfo parameterInfo = new ParameterInfo();
+        parameterInfo.getParameters().put(SortingField.RATING, SortingOrder.ASC);
+        jdbcMovieDao.getAll(parameterInfo);
+    }
+
+    @Test
     public void testIGetThreeRandom() {
         List<Movie> actualMoviesFirstTry = jdbcMovieDao.getThreeRandom();
         List<Movie> actualMoviesSecondTry = jdbcMovieDao.getThreeRandom();
@@ -107,7 +154,29 @@ public class JdbcMovieDaoTest {
     }
 
     @Test
-    public void testIGetByGenreId(){
+    public void testIGetThreeRandomWithRatingOrder() {
+        ParameterInfo parameterInfo = new ParameterInfo();
+        parameterInfo.getParameters().put(SortingField.RATING, SortingOrder.DESC);
+        List<Movie> actualSortedMovies = jdbcMovieDao.getThreeRandom(parameterInfo);
+        List<Movie> expectedMovies = new ArrayList<>(actualSortedMovies);
+        expectedMovies.sort(Movie.MOVIE_RATING_DESCENDING_COMPARATOR);
+
+        assertEquals(expectedMovies, actualSortedMovies);
+    }
+
+    @Test
+    public void testIGetThreeRandomWithWrongRatingOrder() {
+        ParameterInfo parameterInfo = new ParameterInfo();
+        parameterInfo.getParameters().put(SortingField.RATING, SortingOrder.DESC);
+        List<Movie> actualSortedMovies = jdbcMovieDao.getThreeRandom(parameterInfo);
+        List<Movie> expectedMovies = new ArrayList<>(actualSortedMovies);
+        expectedMovies.sort(Movie.MOVIE_RATING_ASCENDING_COMPARATOR);
+
+        assertNotEquals(expectedMovies, actualSortedMovies);
+    }
+
+    @Test
+    public void testIGetByGenreId() {
         int genreId = 2;
 
         JdbcTemplate mockJdbcTemplateGetByGenreId = mock(JdbcTemplate.class);
@@ -119,10 +188,24 @@ public class JdbcMovieDaoTest {
         List<Movie> actualMovies = jdbcMovieDao.getByGenreId(genreId);
 
         int moviesCount = 7;
-        assertEquals(moviesCount,actualMovies.size());
+        assertEquals(moviesCount, actualMovies.size());
         for (Movie expectedMovie : expectedMovies) {
             actualMovies.remove(expectedMovie);
         }
         assertEquals(moviesCount - expectedMovies.size(), actualMovies.size());
+    }
+
+    @Test
+    public void testIGetByGenreIdWithRatingOrder() {
+        int genreId = 2;
+
+        ParameterInfo parameterInfo = new ParameterInfo();
+        parameterInfo.getParameters().put(SortingField.RATING, SortingOrder.DESC);
+        List<Movie> actualSortedMovies = jdbcMovieDao.getByGenreId(genreId, parameterInfo);
+        List<Movie> expectedMovies = jdbcMovieDao.getByGenreId(genreId);
+
+        expectedMovies.sort(Movie.MOVIE_RATING_DESCENDING_COMPARATOR);
+
+        assertEquals(expectedMovies, actualSortedMovies);
     }
 }
