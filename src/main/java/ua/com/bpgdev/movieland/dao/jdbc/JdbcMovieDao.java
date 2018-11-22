@@ -1,17 +1,20 @@
 package ua.com.bpgdev.movieland.dao.jdbc;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import ua.com.bpgdev.movieland.common.ParameterInfo;
 import ua.com.bpgdev.movieland.common.SortingField;
 import ua.com.bpgdev.movieland.common.SortingOrder;
+import org.springframework.stereotype.Repository;
 import ua.com.bpgdev.movieland.dao.MovieDao;
 import ua.com.bpgdev.movieland.dao.jdbc.mapper.MovieRowMapper;
 import ua.com.bpgdev.movieland.entity.Movie;
 
 import java.util.List;
 
+@Repository
 public class JdbcMovieDao implements MovieDao {
     public static final RowMapper<Movie> MOVIE_ROW_MAPPER = new MovieRowMapper();
     @Value("${sql.sql_get_all_movies}")
@@ -23,7 +26,7 @@ public class JdbcMovieDao implements MovieDao {
 
     private JdbcTemplate jdbcTemplate;
 
-    public JdbcMovieDao(JdbcTemplate jdbcTemplate) {
+    public JdbcMovieDao(@Autowired JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

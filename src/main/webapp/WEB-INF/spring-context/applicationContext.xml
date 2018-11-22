@@ -2,37 +2,25 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
-       http://www.springframework.org/schema/context/spring-context.xsd">
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/task
+       http://www.springframework.org/schema/task/spring-task.xsd">
 
-    <context:component-scan base-package="ua.com.bpgdev.movieland.dao"/>
+    <context:component-scan base-package="ua.com.bpgdev.movieland.dao, ua.com.bpgdev.movieland.service"/>
     <context:property-placeholder location="classpath:property/application.properties"/>
+    <task:annotation-driven scheduler="taskScheduler"/>
 
-    <bean id="movieLandDataSource" class="ua.com.bpgdev.movieland.dao.datasource.MovieLandDataSource"/>
+    <task:scheduler id="taskScheduler" pool-size="1"/>
+
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource">
+        <constructor-arg value="/property/datasource.properties"/>
+    </bean>
 
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-        <constructor-arg ref="getDataSource"/>
-    </bean>
-
-    <bean id="jdbcMovieDao" class="ua.com.bpgdev.movieland.dao.jdbc.JdbcMovieDao">
-        <constructor-arg ref="jdbcTemplate"/>
-    </bean>
-
-    <bean id="jdbcGenreDao" class="ua.com.bpgdev.movieland.dao.jdbc.JdbcGenreDao">
-        <constructor-arg ref="jdbcTemplate"/>
-    </bean>
-
-    <bean id="cacheGenreDao" class="ua.com.bpgdev.movieland.dao.cache.CacheGenreDao">
-        <constructor-arg ref="jdbcGenreDao"/>
-    </bean>
-
-    <bean id="movieService" class="ua.com.bpgdev.movieland.service.DefaultMovieService">
-        <constructor-arg ref="jdbcMovieDao"/>
-    </bean>
-
-    <bean id="genreService" class="ua.com.bpgdev.movieland.service.DefaultGenreService">
-        <constructor-arg ref="cacheGenreDao"/>
+        <constructor-arg ref="dataSource"/>
     </bean>
 </beans>
