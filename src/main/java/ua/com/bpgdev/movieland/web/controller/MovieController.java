@@ -1,6 +1,7 @@
 package ua.com.bpgdev.movieland.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +16,7 @@ import java.util.List;
 public class MovieController {
     private MovieService movieService;
 
-    public MovieController(@Autowired MovieService movieService){
+    public MovieController(@Qualifier("defaultMovieService") MovieService movieService){
         this.movieService = movieService;
     }
 
