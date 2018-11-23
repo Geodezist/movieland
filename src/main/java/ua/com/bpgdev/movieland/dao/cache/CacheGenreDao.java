@@ -20,8 +20,7 @@ public class CacheGenreDao implements GenreDao {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private GenreDao nonCacheGenreDao;
 
-    private ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
-    private List<Genre> cachedGenres;
+    private volatile List<Genre> cachedGenres;
 
     public CacheGenreDao(@Qualifier("jdbcGenreDao") GenreDao nonCacheGenreDao) {
         this.nonCacheGenreDao = nonCacheGenreDao;
@@ -31,21 +30,18 @@ public class CacheGenreDao implements GenreDao {
             initialDelayString = "${cache.genresInvalidateTimeout}")
     @PostConstruct
     private void invalidateGenreCache() {
-        Lock writeLock = readWriteLock.writeLock();
-        writeLock.lock();
+        LOGGER.debug("Validating cachedGenres.");
+
         List<Genre> refreshedCacheGenres;
-        try {
-            LOGGER.debug("Validating cachedGenres.");
-            refreshedCacheGenres = nonCacheGenreDao.getAll();
-        } finally {
-            writeLock.unlock();
-        }
+        refreshedCacheGenres = nonCacheGenreDao.getAll();
+
         cachedGenres = refreshedCacheGenres;
     }
 
     @Override
     public List<Genre> getAll() {
         LOGGER.debug("Returning genres from cache.");
+
         return new ArrayList<>(cachedGenres);
     }
 }

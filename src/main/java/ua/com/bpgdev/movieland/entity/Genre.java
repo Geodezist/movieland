@@ -9,10 +9,6 @@ public class Genre {
     public Genre() {
     }
 
-    public Genre(String title) {
-        this.title = title;
-    }
-
     public Genre(int id, String title) {
         this.id = id;
         this.title = title;
@@ -22,16 +18,8 @@ public class Genre {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     @Override
