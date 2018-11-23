@@ -5,24 +5,6 @@ import java.util.Comparator;
 import java.util.Objects;
 
 public class Movie {
-    public static final Comparator<Movie> MOVIE_RATING_DESCENDING_COMPARATOR =
-            Comparator.comparingDouble(Movie::getRating)
-                    .reversed()
-                    .thenComparingInt(Movie::getId);
-
-    public static final Comparator<Movie> MOVIE_RATING_ASCENDING_COMPARATOR =
-            Comparator.comparingDouble(Movie::getRating)
-                    .thenComparingInt(Movie::getId);
-
-    public static final Comparator<Movie> MOVIE_PRICE_ASCENDING_COMPARATOR =
-            Comparator.comparing(Movie::getPrice)
-                    .thenComparingInt(Movie::getId);
-
-    public static final Comparator<Movie> MOVIE_PRICE_DESCENDING_COMPARATOR =
-            Comparator.comparing(Movie::getPrice)
-                    .reversed()
-                    .thenComparingInt(Movie::getId);
-
     private int id;
     private String nameRussian;
     private String nameNative;

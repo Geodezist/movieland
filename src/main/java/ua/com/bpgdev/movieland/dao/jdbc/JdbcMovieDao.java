@@ -4,12 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import ua.com.bpgdev.movieland.common.ParameterInfo;
-import ua.com.bpgdev.movieland.common.SortingField;
-import ua.com.bpgdev.movieland.common.SortingOrder;
+import ua.com.bpgdev.movieland.common.RequestParameters;
 import org.springframework.stereotype.Repository;
 import ua.com.bpgdev.movieland.dao.MovieDao;
 import ua.com.bpgdev.movieland.dao.jdbc.mapper.MovieRowMapper;
+import ua.com.bpgdev.movieland.dao.jdbc.querybuilder.MovieQueryBuilder;
+import ua.com.bpgdev.movieland.dao.jdbc.querybuilder.QueryBuilder;
 import ua.com.bpgdev.movieland.entity.Movie;
 
 import java.util.List;
@@ -25,6 +25,7 @@ public class JdbcMovieDao implements MovieDao {
     private String sqlGetMoviesByGenreId;
 
     private JdbcTemplate jdbcTemplate;
+    private QueryBuilder queryBuilder = new MovieQueryBuilder();
 
     public JdbcMovieDao(@Autowired JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -36,11 +37,11 @@ public class JdbcMovieDao implements MovieDao {
     }
 
     @Override
-    public List<Movie> getAll(ParameterInfo parameterInfo) {
-        if (parameterInfo == null) {
+    public List<Movie> getAll(RequestParameters requestParameters) {
+        if (requestParameters == null) {
             return getAll();
         }
-        String query = queryBuilder(sqlGetAllMovies, parameterInfo);
+        String query = queryBuilder.build(sqlGetAllMovies, requestParameters);
         return jdbcTemplate.query(query, MOVIE_ROW_MAPPER);
     }
 
@@ -50,11 +51,11 @@ public class JdbcMovieDao implements MovieDao {
     }
 
     @Override
-    public List<Movie> getThreeRandom(ParameterInfo parameterInfo) {
-        if (parameterInfo == null) {
+    public List<Movie> getThreeRandom(RequestParameters requestParameters) {
+        if (requestParameters == null) {
             return getThreeRandom();
         }
-        String query = queryBuilder(sqlGetRandomMovies, parameterInfo);
+        String query = queryBuilder.build(sqlGetRandomMovies, requestParameters);
         return jdbcTemplate.query(query, MOVIE_ROW_MAPPER);
     }
 
@@ -64,46 +65,19 @@ public class JdbcMovieDao implements MovieDao {
     }
 
     @Override
-    public List<Movie> getByGenreId(int genreId, ParameterInfo parameterInfo) {
-        if (parameterInfo == null) {
+    public List<Movie> getByGenreId(int genreId, RequestParameters requestParameters) {
+        if (requestParameters == null) {
             return getByGenreId(genreId);
         }
-        String query = queryBuilder(sqlGetMoviesByGenreId, parameterInfo);
+        String query = queryBuilder.build(sqlGetMoviesByGenreId, requestParameters);
         return jdbcTemplate.query(query, MOVIE_ROW_MAPPER, genreId);
     }
 
-    private String queryBuilder(String rawQuery, ParameterInfo parameterInfo) {
-        SortingOrder ratingSortingOrder = parameterInfo.getParameters().get(SortingField.RATING);
-        SortingOrder priceSortingOrder = parameterInfo.getParameters().get(SortingField.PRICE);
-        StringBuilder queryStringBuilder = new StringBuilder(rawQuery);
-        queryStringBuilder.append(" ORDER BY");
-        if (ratingSortingOrder != null) {
-            if (ratingSortingOrder == SortingOrder.DESC) {
-                queryStringBuilder.append(" rating DESC");
-            } else {
-                throw new RuntimeException("Rating can be sorted only in DESC (descending) order! " +
-                        "Was used - " + ratingSortingOrder);
-            }
-        } else if (priceSortingOrder != null) {
-            if (priceSortingOrder == SortingOrder.ASC) {
-                queryStringBuilder.append(" price ASC");
-            } else if (priceSortingOrder == SortingOrder.DESC) {
-                queryStringBuilder.append(" price DESC");
-            } else {
-                throw new RuntimeException("Price can be sorted only in ASC or DESC order! " +
-                        "Was used - " + priceSortingOrder);
-            }
-        } else {
-            throw new RuntimeException("Parameter is not found! Must be ratingSortingOrder or priceSortingOrder!");
-        }
-        return queryStringBuilder.append(", id ASC").toString();
-    }
-
-    public String getSqlGetAllMovies() {
+    String getSqlGetAllMovies() {
         return sqlGetAllMovies;
     }
 
-    public String getSqlGetMoviesByGenreId() {
+    String getSqlGetMoviesByGenreId() {
         return sqlGetMoviesByGenreId;
     }
 }

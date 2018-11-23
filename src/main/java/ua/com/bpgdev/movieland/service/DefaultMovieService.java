@@ -1,6 +1,6 @@
 package ua.com.bpgdev.movieland.service;
 
-import ua.com.bpgdev.movieland.common.ParameterInfo;
+import ua.com.bpgdev.movieland.common.RequestParameters;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ua.com.bpgdev.movieland.dao.MovieDao;
@@ -22,8 +22,8 @@ public class DefaultMovieService implements MovieService {
     }
 
     @Override
-    public List<Movie> getAll(ParameterInfo parameterInfo) {
-        return movieDao.getAll(parameterInfo);
+    public List<Movie> getAll(RequestParameters requestParameters) {
+        return movieDao.getAll(requestParameters);
     }
 
     @Override
@@ -32,8 +32,8 @@ public class DefaultMovieService implements MovieService {
     }
 
     @Override
-    public List<Movie> getThreeRandom(ParameterInfo parameterInfo) {
-        return movieDao.getThreeRandom(parameterInfo);
+    public List<Movie> getThreeRandom(RequestParameters requestParameters) {
+        return movieDao.getThreeRandom(requestParameters);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class DefaultMovieService implements MovieService {
     }
 
     @Override
-    public List<Movie> getByGenreId(int genreId, ParameterInfo parameterInfo) {
-        return movieDao.getByGenreId(genreId, parameterInfo);
+    public List<Movie> getByGenreId(int genreId, RequestParameters requestParameters) {
+        return movieDao.getByGenreId(genreId, requestParameters);
     }
 }
