@@ -7,10 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+import ua.com.bpgdev.movieland.common.RequestParameters;
+import ua.com.bpgdev.movieland.common.SortingField;
+import ua.com.bpgdev.movieland.common.SortingOrder;
+import ua.com.bpgdev.movieland.common.SortingParameter;
 import ua.com.bpgdev.movieland.entity.Movie;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -20,6 +25,25 @@ import static org.mockito.Mockito.when;
 @RunWith(SpringRunner.class)
 @ContextConfiguration(locations = "classpath:property/applicationContext-test.xml")
 public class JdbcMovieDaoTest {
+
+    private static final Comparator<Movie> MOVIE_RATING_DESCENDING_COMPARATOR =
+            Comparator.comparingDouble(Movie::getRating)
+                    .reversed()
+                    .thenComparingInt(Movie::getId);
+
+    private static final Comparator<Movie> MOVIE_RATING_ASCENDING_COMPARATOR =
+            Comparator.comparingDouble(Movie::getRating)
+                    .thenComparingInt(Movie::getId);
+
+    private static final Comparator<Movie> MOVIE_PRICE_ASCENDING_COMPARATOR =
+            Comparator.comparing(Movie::getPrice)
+                    .thenComparingInt(Movie::getId);
+
+    private static final Comparator<Movie> MOVIE_PRICE_DESCENDING_COMPARATOR =
+            Comparator.comparing(Movie::getPrice)
+                    .reversed()
+                    .thenComparingInt(Movie::getId);
+
     @Autowired
     private JdbcMovieDao jdbcMovieDao;
 
@@ -93,6 +117,50 @@ public class JdbcMovieDaoTest {
     }
 
     @Test
+    public void testIGetAllWithRatingOrder() {
+        RequestParameters requestParameters = new RequestParameters(
+                new SortingParameter(SortingField.RATING, SortingOrder.DESC));
+        List<Movie> actualSortedMovies = jdbcMovieDao.getAll(requestParameters);
+        List<Movie> expectedMovies = jdbcMovieDao.getAll();
+
+        expectedMovies.sort(MOVIE_RATING_DESCENDING_COMPARATOR);
+
+        assertEquals(expectedMovies, actualSortedMovies);
+    }
+
+    @Test
+    public void testIGetAllWithPriceOrderAscending() {
+        RequestParameters requestParameters = new RequestParameters(
+                new SortingParameter(SortingField.PRICE, SortingOrder.ASC));
+        List<Movie> actualSortedMovies = jdbcMovieDao.getAll(requestParameters);
+        List<Movie> expectedMovies = jdbcMovieDao.getAll();
+
+        expectedMovies.sort(MOVIE_PRICE_ASCENDING_COMPARATOR);
+
+        assertEquals(expectedMovies, actualSortedMovies);
+    }
+
+    @Test
+    public void testIGetAllWithPriceOrderDescending() {
+        RequestParameters requestParameters = new RequestParameters(
+                new SortingParameter(SortingField.PRICE, SortingOrder.DESC));
+        List<Movie> actualSortedMovies = jdbcMovieDao.getAll(requestParameters);
+        List<Movie> expectedMovies = jdbcMovieDao.getAll();
+
+        expectedMovies.sort(MOVIE_PRICE_DESCENDING_COMPARATOR);
+
+        assertEquals(expectedMovies, actualSortedMovies);
+    }
+
+
+    @Test(expected = RuntimeException.class)
+    public void testIGetAllWithIllegalRatingOrderValue() {
+        RequestParameters requestParameters = new RequestParameters(
+                new SortingParameter(SortingField.RATING, SortingOrder.ASC));
+        jdbcMovieDao.getAll(requestParameters);
+    }
+
+    @Test
     public void testIGetThreeRandom() {
         List<Movie> actualMoviesFirstTry = jdbcMovieDao.getThreeRandom();
         List<Movie> actualMoviesSecondTry = jdbcMovieDao.getThreeRandom();
@@ -107,7 +175,29 @@ public class JdbcMovieDaoTest {
     }
 
     @Test
-    public void testIGetByGenreId(){
+    public void testIGetThreeRandomWithRatingOrder() {
+        RequestParameters requestParameters = new RequestParameters(
+                new SortingParameter(SortingField.RATING, SortingOrder.DESC));
+        List<Movie> actualSortedMovies = jdbcMovieDao.getThreeRandom(requestParameters);
+        List<Movie> expectedMovies = new ArrayList<>(actualSortedMovies);
+        expectedMovies.sort(MOVIE_RATING_DESCENDING_COMPARATOR);
+
+        assertEquals(expectedMovies, actualSortedMovies);
+    }
+
+    @Test
+    public void testIGetThreeRandomWithWrongRatingOrder() {
+        RequestParameters requestParameters = new RequestParameters(
+                new SortingParameter(SortingField.RATING, SortingOrder.DESC));
+        List<Movie> actualSortedMovies = jdbcMovieDao.getThreeRandom(requestParameters);
+        List<Movie> expectedMovies = new ArrayList<>(actualSortedMovies);
+        expectedMovies.sort(MOVIE_RATING_ASCENDING_COMPARATOR);
+
+        assertNotEquals(expectedMovies, actualSortedMovies);
+    }
+
+    @Test
+    public void testIGetByGenreId() {
         int genreId = 2;
 
         JdbcTemplate mockJdbcTemplateGetByGenreId = mock(JdbcTemplate.class);
@@ -119,10 +209,24 @@ public class JdbcMovieDaoTest {
         List<Movie> actualMovies = jdbcMovieDao.getByGenreId(genreId);
 
         int moviesCount = 7;
-        assertEquals(moviesCount,actualMovies.size());
+        assertEquals(moviesCount, actualMovies.size());
         for (Movie expectedMovie : expectedMovies) {
             actualMovies.remove(expectedMovie);
         }
         assertEquals(moviesCount - expectedMovies.size(), actualMovies.size());
+    }
+
+    @Test
+    public void testIGetByGenreIdWithRatingOrder() {
+        int genreId = 2;
+
+        RequestParameters requestParameters = new RequestParameters(
+                new SortingParameter(SortingField.RATING, SortingOrder.DESC));
+        List<Movie> actualSortedMovies = jdbcMovieDao.getByGenreId(genreId, requestParameters);
+        List<Movie> expectedMovies = jdbcMovieDao.getByGenreId(genreId);
+
+        expectedMovies.sort(MOVIE_RATING_DESCENDING_COMPARATOR);
+
+        assertEquals(expectedMovies, actualSortedMovies);
     }
 }
