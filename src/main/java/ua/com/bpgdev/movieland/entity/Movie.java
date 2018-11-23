@@ -1,6 +1,7 @@
 package ua.com.bpgdev.movieland.entity;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.Objects;
 
 public class Movie {
@@ -84,7 +85,7 @@ public class Movie {
                 rating == movie.rating &&
                 price != null && price.equals(movie.price) &&
                 picturePath != null && picturePath.equals(movie.picturePath)
-        ;
+                ;
     }
 
     @Override
