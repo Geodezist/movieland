@@ -5,9 +5,20 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ua.com.bpgdev</groupId>
-    <artifactId>movieland</artifactId>
+    <artifactId>movieland-app</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+
+    <modules>
+        <module>movieland</module>
+        <module>movieland-common</module>
+        <module>movieland-dao</module>
+        <module>movieland-dao-jdbc</module>
+        <module>movieland-entity</module>
+        <module>movieland-service</module>
+        <module>movieland-service-default</module>
+        <module>movieland-web</module>
+    </modules>
+    <packaging>pom</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -16,16 +27,7 @@
         <surefire.plugin.version>2.22.1</surefire.plugin.version>
         <spring-webmvc.version>5.1.2.RELEASE</spring-webmvc.version>
         <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
-        <spring-jdbc.version>5.1.2.RELEASE</spring-jdbc.version>
-        <HikariCP.version>3.2.0</HikariCP.version>
-        <postgresql.version>42.2.5</postgresql.version>
-        <jackson-databind.version>2.9.7</jackson-databind.version>
-        <snakeyaml.version>1.23</snakeyaml.version>
         <logback-classic.version>1.2.3</logback-classic.version>
-        <junit.version>4.12</junit.version>
-        <spring-test.version>5.1.2.RELEASE</spring-test.version>
-        <mockito-all.version>1.10.19</mockito-all.version>
-        <h2.version>1.4.197</h2.version>
     </properties>
 
     <build>
@@ -60,32 +62,6 @@
             <version>${spring-webmvc.version}</version>
         </dependency>
 
-        <!-- DB -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
-            <version>${spring-jdbc.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <version>${HikariCP.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>${postgresql.version}</version>
-        </dependency>
-
-        <!-- PARSERS -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson-databind.version}</version>
-        </dependency>
-
         <!-- UTILS -->
         <dependency>
             <groupId>javax.annotation</groupId>
@@ -99,42 +75,5 @@
             <artifactId>logback-classic</artifactId>
             <version>${logback-classic.version}</version>
         </dependency>
-
-        <!-- TESTS -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <version>${spring-test.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <version>${mockito-all.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>${javax.servlet-api.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>${h2.version}</version>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
 </project>
