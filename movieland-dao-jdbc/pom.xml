@@ -2,28 +2,48 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>movieland-app</artifactId>
         <groupId>ua.com.bpgdev</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
     <artifactId>movieland-dao-jdbc</artifactId>
 
     <properties>
+        <movieland-dao.version>${movieland.version}</movieland-dao.version>
+
+        <spring-context.version>5.1.2.RELEASE</spring-context.version>
+        <javax.annotation-api.version>1.3.2</javax.annotation-api.version>
         <spring-jdbc.version>5.1.2.RELEASE</spring-jdbc.version>
         <HikariCP.version>3.2.0</HikariCP.version>
         <postgresql.version>42.2.5</postgresql.version>
+        <logback-classic.version>1.2.3</logback-classic.version>
         <junit.version>4.12</junit.version>
         <mockito-all.version>1.10.19</mockito-all.version>
     </properties>
 
     <dependencies>
+        <!-- MOVIELAND MODULES -->
         <dependency>
             <groupId>ua.com.bpgdev</groupId>
             <artifactId>movieland-dao</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${movieland-dao.version}</version>
+        </dependency>
+
+        <!-- SPRING ANNOTATION -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring-context.version}</version>
+        </dependency>
+
+        <!-- UTILS -->
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>${javax.annotation-api.version}</version>
         </dependency>
 
         <!-- DB -->
@@ -43,6 +63,13 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>${postgresql.version}</version>
+        </dependency>
+
+        <!-- LOGGING -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback-classic.version}</version>
         </dependency>
 
         <!-- TESTS -->

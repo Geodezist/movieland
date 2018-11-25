@@ -13,6 +13,11 @@
     <artifactId>movieland</artifactId>
 
     <properties>
+        <movieland-common.version>${movieland.version}</movieland-common.version>
+        <movieland-dao-jdbc.version>${movieland.version}</movieland-dao-jdbc.version>
+        <movieland-service-default.version>${movieland.version}</movieland-service-default.version>
+        <movieland-web.version>${movieland.version}</movieland-web.version>
+
         <junit.version>4.12</junit.version>
         <spring-test.version>5.1.2.RELEASE</spring-test.version>
         <mockito-all.version>1.10.19</mockito-all.version>
@@ -21,28 +26,29 @@
     </properties>
 
     <dependencies>
+        <!-- MOVIELAND MODULES -->
         <dependency>
             <groupId>ua.com.bpgdev</groupId>
             <artifactId>movieland-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${movieland-common.version}</version>
         </dependency>
 
         <dependency>
             <groupId>ua.com.bpgdev</groupId>
             <artifactId>movieland-dao-jdbc</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${movieland-dao-jdbc.version}</version>
         </dependency>
 
         <dependency>
             <groupId>ua.com.bpgdev</groupId>
             <artifactId>movieland-service-default</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${movieland-service-default.version}</version>
         </dependency>
 
         <dependency>
             <groupId>ua.com.bpgdev</groupId>
             <artifactId>movieland-web</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${movieland-web.version}</version>
         </dependency>
 
         <!-- TESTS -->
