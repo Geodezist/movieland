@@ -1,0 +1,236 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <changeSet author="Geodezist@gmail.com" id="20181125213000-001">
+        <createTable tableName="d_country">
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="d_country_pkey"/>
+            </column>
+            <column name="title" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Geodezist@gmail.com" id="20181125213000-002">
+        <createTable tableName="d_genre">
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="d_genre_pkey"/>
+            </column>
+            <column name="title" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Geodezist@gmail.com" id="20181125213000-003">
+        <createTable tableName="movie">
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="movie_pkey"/>
+            </column>
+            <column name="title" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title_original" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column name="release_year" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR"/>
+            <column name="rating" type="numeric(3, 1)"/>
+            <column name="price" type="numeric(9, 2)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Geodezist@gmail.com" id="20181125213000-004">
+        <createTable tableName="movie_poster">
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="movie_poster_pkey"/>
+            </column>
+            <column name="movie_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="poster_url" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Geodezist@gmail.com" id="20181125213000-005">
+        <createTable tableName="ref_movie_country">
+            <column name="movie_id" type="INTEGER">
+                <constraints primaryKey="true" primaryKeyName="rmcy_pk"/>
+            </column>
+            <column name="country_id" type="INTEGER">
+                <constraints primaryKey="true" primaryKeyName="rmcy_pk"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Geodezist@gmail.com" id="20181125213000-006">
+        <createTable tableName="ref_movie_genre">
+            <column name="movie_id" type="INTEGER">
+                <constraints primaryKey="true" primaryKeyName="rmre_pk"/>
+            </column>
+            <column name="genre_id" type="INTEGER">
+                <constraints primaryKey="true" primaryKeyName="rmre_pk"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Geodezist@gmail.com" id="20181125213000-007">
+        <createTable tableName="ref_user_account_role">
+            <column name="user_id" type="INTEGER">
+                <constraints primaryKey="true" primaryKeyName="ruat_pk"/>
+            </column>
+            <column name="user_role_id" type="INTEGER">
+                <constraints primaryKey="true" primaryKeyName="ruat_pk"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Geodezist@gmail.com" id="20181125213000-008">
+        <createTable tableName="review">
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="review_pkey"/>
+            </column>
+            <column name="movie_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="review_text" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Geodezist@gmail.com" id="20181125213000-009">
+        <createTable tableName="user_account">
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="user_account_pkey"/>
+            </column>
+            <column name="email" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password_hash" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column name="salt" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column name="iterations" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Geodezist@gmail.com" id="20181125213000-0010">
+        <createTable tableName="user_role">
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="user_role_pkey"/>
+            </column>
+            <column name="code" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Geodezist@gmail.com" id="20181125213000-0011">
+        <createIndex indexName="dcry_title_uindex" tableName="d_country" unique="true">
+            <column name="title"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Geodezist@gmail.com" id="20181125213000-0012">
+        <createIndex indexName="dgre_title_uindex" tableName="d_genre" unique="true">
+            <column name="title"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Geodezist@gmail.com" id="20181125213000-0013">
+        <createIndex indexName="urat_email_uindex" tableName="user_account" unique="true">
+            <column name="email"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Geodezist@gmail.com" id="20181125213000-0014">
+        <createIndex indexName="urre_code_uindex" tableName="user_role" unique="true">
+            <column name="code"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Geodezist@gmail.com" id="20181125213000-0015">
+        <createIndex indexName="urre_title_uindex" tableName="user_role" unique="true">
+            <column name="title"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="Geodezist@gmail.com" id="20181125213000-0016">
+        <addForeignKeyConstraint baseColumnNames="movie_id" baseTableName="movie_poster" constraintName="mepr_movie_fk"
+                                 deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="movie" validate="true"/>
+    </changeSet>
+    <changeSet author="Geodezist@gmail.com" id="20181125213000-0017">
+        <addForeignKeyConstraint baseColumnNames="movie_id" baseTableName="review" constraintName="reew_movie_fk"
+                                 deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="movie" validate="true"/>
+    </changeSet>
+    <changeSet author="Geodezist@gmail.com" id="20181125213000-0018">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="review" constraintName="reew_urat_fk"
+                                 deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="user_account" validate="true"/>
+    </changeSet>
+    <changeSet author="Geodezist@gmail.com" id="20181125213000-0019">
+        <addForeignKeyConstraint baseColumnNames="country_id" baseTableName="ref_movie_country"
+                                 constraintName="rmccy_genre_fk" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                                 referencedTableName="d_country" validate="true"/>
+    </changeSet>
+    <changeSet author="Geodezist@gmail.com" id="20181125213000-0020">
+        <addForeignKeyConstraint baseColumnNames="movie_id" baseTableName="ref_movie_country"
+                                 constraintName="rmcy_movie_fk" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                                 referencedTableName="movie" validate="true"/>
+    </changeSet>
+    <changeSet author="Geodezist@gmail.com" id="20181125213000-0021">
+        <addForeignKeyConstraint baseColumnNames="genre_id" baseTableName="ref_movie_genre"
+                                 constraintName="rmre_genre_fk" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                                 referencedTableName="d_genre" validate="true"/>
+    </changeSet>
+    <changeSet author="Geodezist@gmail.com" id="20181125213000-0022">
+        <addForeignKeyConstraint baseColumnNames="movie_id" baseTableName="ref_movie_genre"
+                                 constraintName="rmre_movie_fk" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                                 referencedTableName="movie" validate="true"/>
+    </changeSet>
+    <changeSet author="Geodezist@gmail.com" id="20181125213000-0023">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="ref_user_account_role"
+                                 constraintName="ruat_urat_fk" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                                 referencedTableName="user_account" validate="true"/>
+    </changeSet>
+    <changeSet author="Geodezist@gmail.com" id="20181125213000-0024">
+        <addForeignKeyConstraint baseColumnNames="user_role_id" baseTableName="ref_user_account_role"
+                                 constraintName="ruat_urre_fk" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                                 referencedTableName="user_role" validate="true"/>
+    </changeSet>
+    <changeSet author="Geodezist@gmail.com" id="20181125213000-0025">
+        <createView fullDefinition="false" viewName="v_movie_three_random">SELECT moie.id,
+            moie.title,
+            moie.title_original,
+            moie.release_year,
+            moie.rating,
+            moie.price,
+            mepr.poster_url
+            FROM (movie moie
+            JOIN movie_poster mepr ON ((mepr.movie_id = moie.id)))
+            ORDER BY (random())
+            LIMIT 3;
+        </createView>
+    </changeSet>
+</databaseChangeLog>
