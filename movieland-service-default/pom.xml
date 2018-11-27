@@ -11,23 +11,16 @@
 
     <artifactId>movieland-service-default</artifactId>
 
-    <properties>
-        <movieland-service.version>${movieland.version}</movieland-service.version>
-        <movieland-dao-jdbc.version>${movieland.version}</movieland-dao-jdbc.version>
-    </properties>
-
     <dependencies>
         <!-- MOVIELAND MODULES -->
         <dependency>
             <groupId>ua.com.bpgdev</groupId>
             <artifactId>movieland-service</artifactId>
-            <version>${movieland-service.version}</version>
         </dependency>
 
         <dependency>
             <groupId>ua.com.bpgdev</groupId>
             <artifactId>movieland-dao-jdbc</artifactId>
-            <version>${movieland-dao-jdbc.version}</version>
         </dependency>
     </dependencies>
 </project>

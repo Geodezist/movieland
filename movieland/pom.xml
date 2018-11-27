@@ -14,15 +14,8 @@
 
     <properties>
         <movieland-common.version>${movieland.version}</movieland-common.version>
-        <movieland-dao-jdbc.version>${movieland.version}</movieland-dao-jdbc.version>
         <movieland-service-default.version>${movieland.version}</movieland-service-default.version>
         <movieland-web.version>${movieland.version}</movieland-web.version>
-
-        <junit.version>4.12</junit.version>
-        <spring-test.version>5.1.2.RELEASE</spring-test.version>
-        <mockito-all.version>1.10.19</mockito-all.version>
-        <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
-        <h2.version>1.4.197</h2.version>
     </properties>
 
     <dependencies>
@@ -36,7 +29,7 @@
         <dependency>
             <groupId>ua.com.bpgdev</groupId>
             <artifactId>movieland-dao-jdbc</artifactId>
-            <version>${movieland-dao-jdbc.version}</version>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -55,36 +48,26 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>${spring-test.version}</version>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
-            <version>${mockito-all.version}</version>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>${javax.servlet-api.version}</version>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>${h2.version}</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

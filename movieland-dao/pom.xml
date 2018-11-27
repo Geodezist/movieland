@@ -11,23 +11,15 @@
 
     <artifactId>movieland-dao</artifactId>
 
-    <properties>
-        <movieland-entity.version>${movieland.version}</movieland-entity.version>
-        <movieland-common.version>${movieland.version}</movieland-common.version>
-    </properties>
-
     <dependencies>
-        <!-- MOVIELAND MODULES -->
         <dependency>
             <groupId>ua.com.bpgdev</groupId>
             <artifactId>movieland-entity</artifactId>
-            <version>${movieland-entity.version}</version>
         </dependency>
 
         <dependency>
             <groupId>ua.com.bpgdev</groupId>
             <artifactId>movieland-common</artifactId>
-            <version>${movieland-common.version}</version>
         </dependency>
     </dependencies>
 </project>

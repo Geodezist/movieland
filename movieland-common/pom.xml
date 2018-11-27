@@ -10,17 +10,12 @@
     </parent>
 
     <artifactId>movieland-common</artifactId>
-    <properties>
-        <junit.version>4.12</junit.version>
-    </properties>
 
     <dependencies>
         <!-- TESTS -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

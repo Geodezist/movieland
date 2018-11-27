@@ -12,16 +12,7 @@
     <artifactId>movieland-dao-jdbc</artifactId>
 
     <properties>
-        <movieland-dao.version>${movieland.version}</movieland-dao.version>
-
-        <spring-context.version>5.1.2.RELEASE</spring-context.version>
-        <javax.annotation-api.version>1.3.2</javax.annotation-api.version>
-        <spring-jdbc.version>5.1.2.RELEASE</spring-jdbc.version>
-        <HikariCP.version>3.2.0</HikariCP.version>
-        <postgresql.version>42.2.5</postgresql.version>
-        <logback-classic.version>1.2.3</logback-classic.version>
-        <junit.version>4.12</junit.version>
-        <mockito-all.version>1.10.19</mockito-all.version>
+        <liquibase-maven-plugin.version>3.6.2</liquibase-maven-plugin.version>
     </properties>
 
     <build>
@@ -29,7 +20,7 @@
             <plugin>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
-                <version>3.6.2</version>
+                <version>${liquibase-maven-plugin.version}</version>
                 <configuration>
                     <changeLogFile>
                         ${basedir}/src/main/liquibase/master.xml
@@ -58,62 +49,51 @@
         <dependency>
             <groupId>ua.com.bpgdev</groupId>
             <artifactId>movieland-dao</artifactId>
-            <version>${movieland-dao.version}</version>
         </dependency>
 
         <!-- SPRING ANNOTATION -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>${spring-context.version}</version>
         </dependency>
 
         <!-- UTILS -->
         <dependency>
             <groupId>javax.annotation</groupId>
             <artifactId>javax.annotation-api</artifactId>
-            <version>${javax.annotation-api.version}</version>
         </dependency>
 
         <!-- DB -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
-            <version>${spring-jdbc.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
-            <version>${HikariCP.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>${postgresql.version}</version>
         </dependency>
 
         <!-- LOGGING -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>${logback-classic.version}</version>
         </dependency>
 
         <!-- TESTS -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
-            <version>${mockito-all.version}</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
