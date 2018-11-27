@@ -32,6 +32,8 @@
         <movieland-dao.version>${movieland.version}</movieland-dao.version>
         <movieland-dao-jdbc.version>${movieland.version}</movieland-dao-jdbc.version>
         <movieland-service.version>${movieland.version}</movieland-service.version>
+        <movieland-service-default.version>${movieland.version}</movieland-service-default.version>
+        <movieland-web.version>${movieland.version}</movieland-web.version>
 
         <spring-context.version>5.1.2.RELEASE</spring-context.version>
         <spring-webmvc.version>5.1.2.RELEASE</spring-webmvc.version>
@@ -102,6 +104,18 @@
                 <groupId>ua.com.bpgdev</groupId>
                 <artifactId>movieland-service</artifactId>
                 <version>${movieland-service.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>ua.com.bpgdev</groupId>
+                <artifactId>movieland-service-default</artifactId>
+                <version>${movieland-service-default.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>ua.com.bpgdev</groupId>
+                <artifactId>movieland-web</artifactId>
+                <version>${movieland-web.version}</version>
             </dependency>
 
             <!-- SPRING ANNOTATION -->
