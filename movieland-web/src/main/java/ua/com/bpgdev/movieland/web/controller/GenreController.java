@@ -1,6 +1,5 @@
 package ua.com.bpgdev.movieland.web.controller;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,12 +12,12 @@ import java.util.List;
 public class GenreController {
     private GenreService genreService;
 
-    public GenreController(@Qualifier("defaultGenreService") GenreService genreService){
+    public GenreController(GenreService genreService) {
         this.genreService = genreService;
     }
 
     @RequestMapping(path = "/genre", method = RequestMethod.GET)
-    public List<Genre> getAll(){
+    public List<Genre> getAll() {
         return genreService.getAll();
     }
 }

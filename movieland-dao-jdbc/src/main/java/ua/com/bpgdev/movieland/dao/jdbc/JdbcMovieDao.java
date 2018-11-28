@@ -2,11 +2,13 @@ package ua.com.bpgdev.movieland.dao.jdbc;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import ua.com.bpgdev.movieland.common.RequestParameters;
 import org.springframework.stereotype.Repository;
 import ua.com.bpgdev.movieland.dao.MovieDao;
+import ua.com.bpgdev.movieland.dao.jdbc.mapper.MovieDetailRowMapper;
 import ua.com.bpgdev.movieland.dao.jdbc.mapper.MovieRowMapper;
 import ua.com.bpgdev.movieland.dao.jdbc.querybuilder.MovieQueryBuilder;
 import ua.com.bpgdev.movieland.dao.jdbc.querybuilder.QueryBuilder;
@@ -15,14 +17,18 @@ import ua.com.bpgdev.movieland.entity.Movie;
 import java.util.List;
 
 @Repository
+@Primary
 public class JdbcMovieDao implements MovieDao {
-    public static final RowMapper<Movie> MOVIE_ROW_MAPPER = new MovieRowMapper();
-    @Value("${sql.sql_get_all_movies}")
+    static final RowMapper<Movie> MOVIE_ROW_MAPPER = new MovieRowMapper();
+    static final RowMapper<Movie> MOVIE_DETAIL_ROW_MAPPER = new MovieDetailRowMapper();
+    @Value("${sql.movie.getAll}")
     private String sqlGetAllMovies;
-    @Value("${sql.sql_get_random_movies}")
+    @Value("${sql.movie.getRandomMovies}")
     private String sqlGetRandomMovies;
-    @Value(("${sql.sql_get_movies_by_genre_id}"))
+    @Value(("${sql.movie.getByGenreId}"))
     private String sqlGetMoviesByGenreId;
+    @Value(("${sql.movie.getById}"))
+    private String sqlGetMovieById;
 
     private JdbcTemplate jdbcTemplate;
     private QueryBuilder queryBuilder = new MovieQueryBuilder();
@@ -71,6 +77,11 @@ public class JdbcMovieDao implements MovieDao {
         }
         String query = queryBuilder.build(sqlGetMoviesByGenreId, requestParameters);
         return jdbcTemplate.query(query, MOVIE_ROW_MAPPER, genreId);
+    }
+
+    @Override
+    public Movie getById(int id) {
+        return jdbcTemplate.queryForObject(sqlGetMovieById, MOVIE_DETAIL_ROW_MAPPER, id);
     }
 
     String getSqlGetAllMovies() {

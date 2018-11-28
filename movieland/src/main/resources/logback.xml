@@ -4,7 +4,7 @@
     <appender name="allToConsole" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>
-                %d{ISO8601} [%-5p] [%thread] %36.36logger{36} - %msg%n
+                %highlight(%d{ISO8601} [%-5p] [%thread] %36.36logger{36} - %msg%n)
             </pattern>
         </encoder>
     </appender>
@@ -29,7 +29,7 @@
     </logger>
 
     <root>
-        <level value="INFO"/>
+        <level value="DEBUG"/>
         <appender-ref ref="allToConsole"/>
     </root>
 </configuration>
