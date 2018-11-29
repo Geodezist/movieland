@@ -31,6 +31,7 @@
                     <password>movieland</password>
                     <defaultSchemaName>movieland</defaultSchemaName>
                 </configuration>
+                <!--
                 <executions>
                     <execution>
                         <phase>process-resources</phase>
@@ -39,6 +40,7 @@
                         </goals>
                     </execution>
                 </executions>
+                -->
             </plugin>
         </plugins>
     </build>
