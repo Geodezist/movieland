@@ -4,12 +4,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Repository;
-import ua.com.bpgdev.movieland.dao.GenreDao;
-import ua.com.bpgdev.movieland.entity.Genre;
-
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+
+import ua.com.bpgdev.movieland.dao.GenreDao;
+import ua.com.bpgdev.movieland.entity.Genre;
 
 @Repository
 public class CacheGenreDao implements GenreDao {

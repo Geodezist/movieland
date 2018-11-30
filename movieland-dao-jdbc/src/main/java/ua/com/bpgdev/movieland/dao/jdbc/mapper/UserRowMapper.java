@@ -1,10 +1,10 @@
 package ua.com.bpgdev.movieland.dao.jdbc.mapper;
 
 import org.springframework.jdbc.core.RowMapper;
-import ua.com.bpgdev.movieland.entity.User;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import ua.com.bpgdev.movieland.entity.User;
 
 public class UserRowMapper implements RowMapper<User> {
     @Override

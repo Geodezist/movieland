@@ -5,16 +5,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import ua.com.bpgdev.movieland.common.RequestParameters;
 import org.springframework.stereotype.Repository;
+import java.util.List;
+
 import ua.com.bpgdev.movieland.dao.MovieDao;
 import ua.com.bpgdev.movieland.dao.jdbc.mapper.MovieDetailRowMapper;
 import ua.com.bpgdev.movieland.dao.jdbc.mapper.MovieRowMapper;
 import ua.com.bpgdev.movieland.dao.jdbc.querybuilder.MovieQueryBuilder;
 import ua.com.bpgdev.movieland.dao.jdbc.querybuilder.QueryBuilder;
 import ua.com.bpgdev.movieland.entity.Movie;
-
-import java.util.List;
+import ua.com.bpgdev.movieland.common.RequestParameters;
 
 @Repository
 @Primary
@@ -90,5 +90,9 @@ public class JdbcMovieDao implements MovieDao {
 
     String getSqlGetMoviesByGenreId() {
         return sqlGetMoviesByGenreId;
+    }
+
+    public String getSqlGetMovieById() {
+        return sqlGetMovieById;
     }
 }
