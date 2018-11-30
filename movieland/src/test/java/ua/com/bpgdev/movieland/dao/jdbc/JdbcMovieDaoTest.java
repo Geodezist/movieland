@@ -109,7 +109,7 @@ public class JdbcMovieDaoTest {
         List<Movie> actualMovies = jdbcMovieDao.getAll();
 
         assertEquals(3, mockMovieDao.getAll().size());
-        assertEquals(24, jdbcMovieDao.getAll().size());
+        assertEquals(25, jdbcMovieDao.getAll().size());
 
         for (int index = 0; index < expectedMovies.size() - 1; index++) {
             assertEquals(expectedMovies.get(index), actualMovies.get(index));
@@ -228,5 +228,26 @@ public class JdbcMovieDaoTest {
         expectedMovies.sort(MOVIE_RATING_DESCENDING_COMPARATOR);
 
         assertEquals(expectedMovies, actualSortedMovies);
+    }
+
+    @Test
+    public void testGetById(){
+        Movie expectedMovie = new Movie();
+        expectedMovie.setId(1);
+        expectedMovie.setNameRussian("Побег из Шоушенка");
+        expectedMovie.setNameNative("The Shawshank Redemption");
+        expectedMovie.setYearOfRelease(1994);
+        expectedMovie.setDescription("Успешный банкир Энди Дюфрейн обвинен в убийстве собственной жены и ее любовника. " +
+                "Оказавшись в тюрьме под названием Шоушенк, он сталкивается с жестокостью и беззаконием, " +
+                "царящими по обе стороны решетки. Каждый, кто попадает в эти стены, становится их рабом до конца жизни. " +
+                "Но Энди, вооруженный живым умом и доброй душой, отказывается мириться с приговором судьбы " +
+                "и начинает разрабатывать невероятно дерзкий план своего освобождения.");
+        expectedMovie.setRating(8.9d);
+        expectedMovie.setPrice(BigDecimal.valueOf(123.45d));
+        expectedMovie.setPicturePath("https://images-na.ssl-images-amazon.com/images/M/MV5BODU4MjU4NjIwNl5BMl5BanBnXkFtZTgwMDU2MjEyMDE@._V1._SY209_CR0,0,140,209_.jpg");
+
+        Movie actualMovie = jdbcMovieDao.getById(1);
+
+        assertEquals(expectedMovie, actualMovie);
     }
 }

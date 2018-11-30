@@ -1,12 +1,12 @@
 package ua.com.bpgdev.movieland.web.controller;
 
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import ua.com.bpgdev.movieland.common.RequestParameters;
-import ua.com.bpgdev.movieland.common.SortingField;
-import ua.com.bpgdev.movieland.common.SortingOrder;
-import ua.com.bpgdev.movieland.common.SortingParameter;
+import ua.com.bpgdev.movieland.common.*;
 import ua.com.bpgdev.movieland.entity.Movie;
 import ua.com.bpgdev.movieland.service.MovieService;
 
@@ -14,9 +14,10 @@ import java.util.List;
 
 @RestController
 public class MovieController {
+    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private MovieService movieService;
 
-    public MovieController(@Qualifier("defaultMovieService") MovieService movieService) {
+    public MovieController(MovieService movieService) {
         this.movieService = movieService;
     }
 
@@ -49,6 +50,22 @@ public class MovieController {
         }
         RequestParameters requestParameters = prepareRequestParameter(ratingSortingOrder, priceSortingOrder);
         return movieService.getByGenreId(genreId, requestParameters);
+    }
+
+    @RequestMapping(path = "/movie/{movieId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public Movie getById(@PathVariable int movieId) {
+        return movieService.getById(movieId);
+    }
+
+    @ExceptionHandler(/*{IllegalArgumentException.class}*/)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    void handleBadRequests(Exception e) {
+        LOGGER.error("Something goes wrong ...", e);
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder dataBinder) {
+        dataBinder.registerCustomEditor(SortingOrder.class, new SortingOrderConverter());
     }
 
     private RequestParameters prepareRequestParameter(SortingOrder ratingSortingOrder, SortingOrder priceSortingOrder) {

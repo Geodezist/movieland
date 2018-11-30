@@ -1065,6 +1065,43 @@ SELECT
        (SELECT id FROM movie WHERE title = 'Джанго освобожденный'),
        (SELECT id FROM d_country WHERE title = 'США')
 ;
+
+INSERT INTO movie (title, title_original, release_year, description, rating, price)
+SELECT
+   'Танцующий с волками',
+   'Dances with Wolves',
+   1990,
+   'Действие фильма происходит в США во времена Гражданской войны. Лейтенант американской армии Джон Данбар после ранения в бою просит перевести его на новое место службы ближе к западной границе США. Место его службы отдалённый маленький форт. Непосредственный его командир покончил жизнь самоубийством, а попутчик Данбара погиб в стычке с индейцами после того, как довез героя до места назначения. Людей, знающих, что Данбар остался один в форте и должен выжить в условиях суровой природы, и в соседстве с кажущимися негостеприимными коренными обитателями Северной Америки, просто не осталось. Казалось, он покинут всеми. Постепенно лейтенант осваивается, он ведет записи в дневнике…',
+   8.0,
+   120.55
+;
+
+INSERT INTO ref_movie_genre (movie_id, genre_id)
+SELECT
+   (SELECT id FROM movie WHERE title = 'Танцующий с волками'),
+   (SELECT id FROM d_genre WHERE title = 'драма')
+;
+INSERT INTO ref_movie_genre (movie_id, genre_id)
+SELECT
+   (SELECT id FROM movie WHERE title = 'Танцующий с волками'),
+   (SELECT id FROM d_genre WHERE title = 'приключения')
+;
+INSERT INTO ref_movie_genre (movie_id, genre_id)
+SELECT
+   (SELECT id FROM movie WHERE title = 'Танцующий с волками'),
+   (SELECT id FROM d_genre WHERE title = 'вестерн')
+;
+
+INSERT INTO ref_movie_country (movie_id, country_id)
+SELECT
+   (SELECT id FROM movie WHERE title = 'Танцующий с волками'),
+   (SELECT id FROM d_country WHERE title = 'США')
+;
+INSERT INTO ref_movie_country (movie_id, country_id)
+SELECT
+   (SELECT id FROM movie WHERE title = 'Танцующий с волками'),
+   (SELECT id FROM d_country WHERE title = 'Великобритания')
+;
 COMMIT;
 INSERT INTO movie_poster (movie_id, poster_url)
 SELECT
@@ -1210,4 +1247,329 @@ SELECT
        'https://images-na.ssl-images-amazon.com/images/M/MV5BMjIyNTQ5NjQ1OV5BMl5BanBnXkFtZTcwODg1MDU4OA@@._V1._SY209_CR0,0,140,209_.jpg'
 ;
 
+INSERT INTO movie_poster (movie_id, poster_url)
+SELECT
+   (SELECT id FROM movie WHERE title ='Танцующий с волками'),
+   'https://images-na.ssl-images-amazon.com/images/M/MV5BMTY3OTI5NDczN15BMl5BanBnXkFtZTcwNDA0NDY3Mw@@._V1._SX140_CR0,0,140,209_.jpg'
+;
+
 COMMIT;
+
+INSERT INTO user_account (email, first_name, last_name, password_hash, salt, iterations)
+SELECT
+       'ronald.reynolds66@example.com',
+       'Рональд',
+       'Рейнольдс',
+       'paco',
+       'paco',
+       1
+;
+
+INSERT INTO user_account (email, first_name, last_name, password_hash, salt, iterations)
+SELECT
+       'darlene.edwards15@example.com',
+       'Дарлин',
+       'Эдвардс',
+       'bricks',
+       'bricks',
+       1
+;
+
+INSERT INTO user_account (email, first_name, last_name, password_hash, salt, iterations)
+SELECT
+       'gabriel.jackson91@example.com',
+       'Габриэль',
+       'Джексон',
+       'hjkl',
+       'hjkl',
+       1
+;
+
+INSERT INTO user_account (email, first_name, last_name, password_hash, salt, iterations)
+SELECT
+       'daryl.bryant94@example.com',
+       'Дэрил',
+       'Брайант',
+       'exodus',
+       'exodus',
+       1
+;
+
+INSERT INTO user_account (email, first_name, last_name, password_hash, salt, iterations)
+SELECT
+       'neil.parker43@example.com',
+       'Нил',
+       'Паркер',
+       '878787',
+       '878787',
+       1
+;
+
+INSERT INTO user_account (email, first_name, last_name, password_hash, salt, iterations)
+SELECT
+       'travis.wright36@example.com',
+       'Трэвис',
+       'Райт',
+       'smart',
+       'smart',
+       1
+;
+
+INSERT INTO user_account (email, first_name, last_name, password_hash, salt, iterations)
+SELECT
+       'amelia.kennedy58@example.com',
+       'Амелия',
+       'Кэннеди',
+       'beaker',
+       'beaker',
+       1
+;
+
+INSERT INTO user_account (email, first_name, last_name, password_hash, salt, iterations)
+SELECT
+       'ida.davis80@example.com',
+       'Айда',
+       'Дэвис',
+       'pepsi1',
+       'pepsi1',
+       1
+;
+
+INSERT INTO user_account (email, first_name, last_name, password_hash, salt, iterations)
+SELECT
+       'jessie.patterson68@example.com',
+       'Джесси',
+       'Паттерсон',
+       'tommy',
+       'tommy',
+       1
+;
+
+INSERT INTO user_account (email, first_name, last_name, password_hash, salt, iterations)
+SELECT
+       'dennis.craig82@example.com',
+       'Деннис',
+       'Крейг',
+       'coldbeer',
+       'coldbeer',
+       1
+;
+COMMIT;
+INSERT INTO review (movie_id, user_id, review_text)
+SELECT
+       (SELECT id FROM movie m WHERE m.title='Побег из Шоушенка'),
+       (SELECT id FROM user_account u WHERE u.first_name='Дарлин' AND u.last_name='Эдвардс'),
+       'Гениальное кино! Смотришь и думаешь «Так не бывает!», но позже понимаешь, что только так и должно быть. Начинаешь заново осмысливать значение фразы, которую постоянно используешь в своей жизни, «Надежда умирает последней». Ведь если ты не надеешься, то все в твоей жизни гаснет, не остается смысла. Фильм наполнен бесконечным числом правильных афоризмов. Я уверена, что буду пересматривать его сотни раз.'
+;
+
+INSERT INTO review (movie_id, user_id, review_text)
+SELECT
+       (SELECT id FROM movie m WHERE m.title='Побег из Шоушенка'),
+       (SELECT id FROM user_account u WHERE u.first_name='Габриэль' AND u.last_name='Джексон'),
+       'Кино это является, безусловно, «со знаком качества». Что же до первого места в рейтинге, то, думаю, здесь имело место быть выставление «десяточек» от большинства зрителей вкупе с раздутыми восторженными откликами кинокритиков. Фильм атмосферный. Он драматичный. И, конечно, заслуживает того, чтобы находиться довольно высоко в мировом кинематографе.'
+;
+
+INSERT INTO review (movie_id, user_id, review_text)
+SELECT
+       (SELECT id FROM movie m WHERE m.title='Зеленая миля'),
+       (SELECT id FROM user_account u WHERE u.first_name='Рональд' AND u.last_name='Рейнольдс'),
+       'Перестал удивляться тому, что этот фильм занимает сплошь первые места во всевозможных кино рейтингах. Особенно я люблю когда при экранизации литературного произведение из него в силу специфики кинематографа исчезает ирония и появляется некий сверхреализм, обязанный удерживать зрителя у экрана каждую отдельно взятую секунду.'
+;
+
+INSERT INTO review (movie_id, user_id, review_text)
+SELECT
+       (SELECT id FROM movie m WHERE m.title='Форрест Гамп'),
+       (SELECT id FROM user_account u WHERE u.first_name='Нил' AND u.last_name='Паркер'),
+       'Много еще можно сказать об этом шедевре. И то, что он учит верить, и то, чтобы никогда не сдаваться… Но самый главный девиз я увидел вот в этой фразе: «Занимайся жизнью, или занимайся смертью».'
+;
+
+INSERT INTO review (movie_id, user_id, review_text)
+SELECT
+       (SELECT id FROM movie m WHERE m.title='Список Шиндлера'),
+       (SELECT id FROM user_account u WHERE u.first_name='Трэвис' AND u.last_name='Райт'),
+       'Очень хороший фильм, необычный сюжет, я бы даже сказала непредсказуемый. Такие фильмы уже стали редкостью.'
+;
+
+INSERT INTO review (movie_id, user_id, review_text)
+SELECT
+       (SELECT id FROM movie m WHERE m.title='1+1'),
+       (SELECT id FROM user_account u WHERE u.first_name='Джесси' AND u.last_name='Паттерсон'),
+       'У меня не найдётся слов, чтобы описать этот фильм. Не хочется быть банальной и говорить какой он отличный, непредсказуемый и т. д., но от этого никуда не деться к сожалению — ведь он ШЕДЕВРАЛЬНЫЙ!'
+;
+
+INSERT INTO review (movie_id, user_id, review_text)
+SELECT
+       (SELECT id FROM movie m WHERE m.title='1+1'),
+       (SELECT id FROM user_account u WHERE u.first_name='Амелия' AND u.last_name='Кэннеди'),
+       'Скажу сразу — фильм выглядел многообещающе, даже если не брать в расчет что он находился в топе-250 лучших фильмов. Известные голливудские актеры на главных ролях. Но нет в этом фильме должной атмосферы. Нет такого чувства что вот сейчас случится что-то страшное. Что герои попали в ситуацию из которой не смогут выбраться. В общем, не понравилось.'
+;
+
+INSERT INTO review (movie_id, user_id, review_text)
+SELECT
+       (SELECT id FROM movie m WHERE m.title='Жизнь прекрасна'),
+       (SELECT id FROM user_account u WHERE u.first_name='Габриэль' AND u.last_name='Джексон'),
+       '«Все должно быть супер! Супер! Су-пер!» И это именно супер, ну слов других не подберешь.'
+;
+
+INSERT INTO review (movie_id, user_id, review_text)
+SELECT
+       (SELECT id FROM movie m WHERE m.title='Бойцовский клуб'),
+       (SELECT id FROM user_account u WHERE u.first_name='Деннис' AND u.last_name='Крейг'),
+       'Фильм очень красивый. Не во всем, конечно, но яркие персонажи и костюмы — это уже кое-что. '
+;
+
+INSERT INTO review (movie_id, user_id, review_text)
+SELECT
+       (SELECT id FROM movie m WHERE m.title='Как приручить дракона'),
+       (SELECT id FROM user_account u WHERE u.first_name='Габриэль' AND u.last_name='Джексон'),
+       'Этот фильм из разряда тех, что могут обеспечить хороший отдых и приподнятое настроение за счёт своей лёгкости, совсем непошлого юмора, умеренной дозы напряжения, динамики нужных скоростей.'
+;
+
+INSERT INTO review (movie_id, user_id, review_text)
+SELECT
+       (SELECT id FROM movie m WHERE m.title='Как приручить дракона'),
+       (SELECT id FROM user_account u WHERE u.first_name='Нил' AND u.last_name='Паркер'),
+       'Назначается Киношедевром среди развлекательных фильмов.'
+;
+
+INSERT INTO review (movie_id, user_id, review_text)
+SELECT
+       (SELECT id FROM movie m WHERE m.title='Гладиатор'),
+       (SELECT id FROM user_account u WHERE u.first_name='Амелия' AND u.last_name='Кэннеди'),
+       'Данный кинофильм — нестареющая классика мирового кинематографа, который можно пересматривать до бесконечности и, что удивительно, он не может надоесть.'
+;
+
+INSERT INTO review (movie_id, user_id, review_text)
+SELECT
+       (SELECT id FROM movie m WHERE m.title='Темный рыцарь'),
+       (SELECT id FROM user_account u WHERE u.first_name='Дэрил' AND u.last_name='Брайант'),
+       'Рекомендую смотреть всем и не обращать внимания на надоевшее уже спасение целого мира одним человеком.'
+;
+
+INSERT INTO review (movie_id, user_id, review_text)
+SELECT
+       (SELECT id FROM movie m WHERE m.title='Большой куш'),
+       (SELECT id FROM user_account u WHERE u.first_name='Дэрил' AND u.last_name='Брайант'),
+       'Удивлен. Никто не отозвался плохо? Неужели было создано произведение искусства, которое нравится всем, и которое совершенно? Нет. Может, я один такой? Фильм не вызывает во мне никаких эмоций. Неплохая сказочка. Замечательная наивная атмосфера. Местами есть забавные шутки. И, как мне показалось, этот фильм — своего рода стёб над другими боевиками. При этом превосходящий многие боевики.'
+;
+
+INSERT INTO review (movie_id, user_id, review_text)
+SELECT
+       (SELECT id FROM movie m WHERE m.title='Унесённые призраками'),
+       (SELECT id FROM user_account u WHERE u.first_name='Деннис' AND u.last_name='Крейг'),
+       'Необыкновенно позитивный фильм. Его можно пересматривать много раз для поднятия настроения, находя много смешных, незаметных на первый взгляд моментов.'
+;
+
+INSERT INTO review (movie_id, user_id, review_text)
+SELECT
+       (SELECT id FROM movie m WHERE m.title='Звёздные войны: Эпизод 4 – Новая надежда'),
+       (SELECT id FROM user_account u WHERE u.first_name='Амелия' AND u.last_name='Кэннеди'),
+       'Легендарный. Культовый. Бессмертный. Три слова. Всего лишь три. А сколько же они выражают неподдельных эмоций и радостных впечатлений по отношению к очередному любимому и уважаемому фильму из минувшего в лету детства? Много. Слишком много. И описать эти сердечные и гарцующие в здравом рассудке чувства обыкновенными строчными предложениями иногда не представляется возможным. '
+;
+
+INSERT INTO review (movie_id, user_id, review_text)
+SELECT
+       (SELECT id FROM movie m WHERE m.title='Большой куш'),
+       (SELECT id FROM user_account u WHERE u.first_name='Трэвис' AND u.last_name='Райт'),
+       'Приятного просмотра для всех, кто не видел ещё этого шедевра больше впечатлений для тех, кто пересматривает в надцатый раз. =) '
+;
+
+INSERT INTO review (movie_id, user_id, review_text)
+SELECT
+       (SELECT id FROM movie m WHERE m.title='Большой куш'),
+       (SELECT id FROM user_account u WHERE u.first_name='Нил' AND u.last_name='Паркер'),
+       'Это один из любимых моих фильмов с самого детства. Я видела его столько раз, что знаю практически наизусть. И могу сказать с уверенностью, что посмотрю еще не один раз. '
+;
+
+INSERT INTO review (movie_id, user_id, review_text)
+SELECT
+       (SELECT id FROM movie m WHERE m.title='Молчание ягнят'),
+       (SELECT id FROM user_account u WHERE u.first_name='Габриэль' AND u.last_name='Джексон'),
+       'Фильм, безусловно, посмотрела уже большая часть населения, которая хоть каким-то образом имеет отношение к кинематографу. Я считаю, что фильм можно пересмотреть еще не один раз.'
+;
+
+INSERT INTO review (movie_id, user_id, review_text)
+SELECT
+       (SELECT id FROM movie m WHERE m.title='Как приручить дракона'),
+       (SELECT id FROM user_account u WHERE u.first_name='Айда' AND u.last_name='Дэвис'),
+       'Фильм продуман до мельчайших деталей. Идеальный фильм для улучшения настроения, единственный в своем роде. Обязателен к просмотру!'
+;
+
+INSERT INTO review (movie_id, user_id, review_text)
+SELECT
+       (SELECT id FROM movie m WHERE m.title='Блеф'),
+       (SELECT id FROM user_account u WHERE u.first_name='Нил' AND u.last_name='Паркер'),
+       'Фильм потрясающий, в нем хватает абсолютно всего: и драк, и музыки, и юмора, и любви. '
+;
+
+INSERT INTO review (movie_id, user_id, review_text)
+SELECT
+       (SELECT id FROM movie m WHERE m.title='Гран Торино'),
+       (SELECT id FROM user_account u WHERE u.first_name='Рональд' AND u.last_name='Рейнольдс'),
+       'У фильма есть свои мелкие недостатки  и неточности, но многочисленные достоинства в несколько раз перевешивают. Много вдохновляющего креатива!'
+;
+
+INSERT INTO review (movie_id, user_id, review_text)
+SELECT
+       (SELECT id FROM movie m WHERE m.title='Молчание ягнят'),
+       (SELECT id FROM user_account u WHERE u.first_name='Дарлин' AND u.last_name='Эдвардс'),
+       'Хоть и не по возрасту мне заводить скрипучую пластинку с мелодией «Раньше и деревья были выше, и трава зеленее…», а хочется. Выражать свою любовь к настолько близкому произведению крайне сложно.'
+;
+
+INSERT INTO review (movie_id, user_id, review_text)
+SELECT
+       (SELECT id FROM movie m WHERE m.title='Блеф'),
+       (SELECT id FROM user_account u WHERE u.first_name='Айда' AND u.last_name='Дэвис'),
+       'Вердикт: прекрасная, нестареющая классика, которая рекомендована мною для всех.'
+;
+
+INSERT INTO review (movie_id, user_id, review_text)
+SELECT
+       (SELECT id FROM movie m WHERE m.title='Хороший, плохой, злой'),
+       (SELECT id FROM user_account u WHERE u.first_name='Дэрил' AND u.last_name='Брайант'),
+       'Для воскресного вечернего просмотра подходит по всем критериям.'
+;
+
+INSERT INTO review (movie_id, user_id, review_text)
+SELECT
+       (SELECT id FROM movie m WHERE m.title='Укрощение строптивого'),
+       (SELECT id FROM user_account u WHERE u.first_name='Нил' AND u.last_name='Паркер'),
+       'Хороший и по-настоящему интересный фильм, с хорошим сюжетом и неплохим музыкальным сопровождением. Всем советую к просмотру.'
+;
+
+INSERT INTO review (movie_id, user_id, review_text)
+SELECT
+       (SELECT id FROM movie m WHERE m.title='Джанго освобожденный'),
+       (SELECT id FROM user_account u WHERE u.first_name='Трэвис' AND u.last_name='Райт'),
+       'Полагаю, этот фильм должен быть в коллекции каждого уважающего себя киномана. '
+;
+
+INSERT INTO review (movie_id, user_id, review_text)
+SELECT
+       (SELECT id FROM movie m WHERE m.title='Танцующий с волками'),
+       (SELECT id FROM user_account u WHERE u.first_name='Амелия' AND u.last_name='Кэннеди'),
+       'Нетленный шедевр мирового кинематографа, который можно пересматривать десятки раз и получать все такой — же, извините за выражение, кайф от просмотра. Минусы у фильма, конечно, есть, но черт возьми. Их просто не хочется замечать! Ты настолько поглощен просмотром фильма, что просто не хочется придираться к разным мелочам. '
+;
+
+INSERT INTO review (movie_id, user_id, review_text)
+SELECT
+       (SELECT id FROM movie m WHERE m.title='Джанго освобожденный'),
+       (SELECT id FROM user_account u WHERE u.first_name='Айда' AND u.last_name='Дэвис'),
+       'Фильм только выигрывает от частого просмотра и всегда поднимает мне настроение (наряду с драмой, тут еще и тонкий юмор). '
+;
+
+INSERT INTO review (movie_id, user_id, review_text)
+SELECT
+       (SELECT id FROM movie m WHERE m.title='Укрощение строптивого'),
+       (SELECT id FROM user_account u WHERE u.first_name='Джесси' AND u.last_name='Паттерсон'),
+       'Конечно, бесспорно культовый фильм, не реалистичный, наивный, где то глупый, но такой же увлекательный и удивительный, как и много лет назад'
+;
+
+INSERT INTO review (movie_id, user_id, review_text)
+SELECT
+       (SELECT id FROM movie m WHERE m.title='Титаник'),
+       (SELECT id FROM user_account u WHERE u.first_name='Джесси' AND u.last_name='Паттерсон'),
+       'В итоге мы имеем отличный представитель своего жанра, который прошёл проверку временем и до сих пор отлично смотрится, несмотря на классический сюжет'
+;
+COMMIT;
+

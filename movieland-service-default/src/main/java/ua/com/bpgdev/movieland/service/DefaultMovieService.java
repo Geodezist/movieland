@@ -1,19 +1,26 @@
 package ua.com.bpgdev.movieland.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import ua.com.bpgdev.movieland.common.RequestParameters;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ua.com.bpgdev.movieland.dao.MovieDao;
 import ua.com.bpgdev.movieland.entity.Movie;
+import ua.com.bpgdev.movieland.service.enricher.MovieEnricherService;
 
 import java.util.List;
 
 @Service
+@Primary
 public class DefaultMovieService implements MovieService {
     private MovieDao movieDao;
+    private MovieEnricherService movieEnricherService;
 
-    public DefaultMovieService(@Qualifier("jdbcMovieDao") MovieDao movieDao) {
+    public DefaultMovieService(@Autowired MovieDao movieDao,
+                               @Autowired MovieEnricherService movieEnricherService
+    ) {
         this.movieDao = movieDao;
+        this.movieEnricherService = movieEnricherService;
     }
 
     @Override
@@ -45,4 +52,12 @@ public class DefaultMovieService implements MovieService {
     public List<Movie> getByGenreId(int genreId, RequestParameters requestParameters) {
         return movieDao.getByGenreId(genreId, requestParameters);
     }
+
+    @Override
+    public Movie getById(int movieId) {
+        Movie movie = movieDao.getById(movieId);
+        movieEnricherService.enrich(movie);
+        return movie;
+    }
+
 }

@@ -1,0 +1,8 @@
+language: java
+jdk: oraclejdk9
+services:
+  - postgresql
+addons:
+  postgresql: "10.5"
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

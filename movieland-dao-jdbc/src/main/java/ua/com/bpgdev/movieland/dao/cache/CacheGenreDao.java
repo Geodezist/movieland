@@ -2,7 +2,6 @@ package ua.com.bpgdev.movieland.dao.cache;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Repository;
 import ua.com.bpgdev.movieland.dao.GenreDao;
@@ -19,7 +18,7 @@ public class CacheGenreDao implements GenreDao {
 
     private volatile List<Genre> cachedGenres;
 
-    public CacheGenreDao(@Qualifier("jdbcGenreDao") GenreDao nonCacheGenreDao) {
+    public CacheGenreDao(GenreDao nonCacheGenreDao) {
         this.nonCacheGenreDao = nonCacheGenreDao;
     }
 
@@ -40,5 +39,10 @@ public class CacheGenreDao implements GenreDao {
         LOGGER.debug("Returning genres from cache.");
 
         return new ArrayList<>(cachedGenres);
+    }
+
+    @Override
+    public List<Genre> getByMovieId(int movieId) {
+        return nonCacheGenreDao.getByMovieId(movieId);
     }
 }

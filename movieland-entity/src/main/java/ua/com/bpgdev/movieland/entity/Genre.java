@@ -31,8 +31,7 @@ public class Genre {
             return false;
         }
         Genre genre = (Genre) object;
-        return id == genre.id &&
-                Objects.equals(title, genre.title);
+        return id == genre.id && Objects.equals(title, genre.title);
     }
 
     @Override
