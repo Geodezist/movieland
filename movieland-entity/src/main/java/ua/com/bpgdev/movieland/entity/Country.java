@@ -3,8 +3,8 @@ package ua.com.bpgdev.movieland.entity;
 import java.util.Objects;
 
 public class Country {
-    int id;
-    String name;
+    private int id;
+    private String name;
 
     public Country(int id, String name) {
         this.id = id;
@@ -20,7 +20,7 @@ public class Country {
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(final Object object) {
         if (this == object) {
             return true;
         }
@@ -28,8 +28,8 @@ public class Country {
             return false;
         }
         Country country = (Country) object;
-        return id == country.id &&
-                Objects.equals(name, country.name);
+        return id == country.id
+                && Objects.equals(name, country.name);
     }
 
     @Override
@@ -39,9 +39,9 @@ public class Country {
 
     @Override
     public String toString() {
-        return "Country{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+        return "Country{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + '}';
     }
 }
