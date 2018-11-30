@@ -1,10 +1,10 @@
 package ua.com.bpgdev.movieland.dao.jdbc.mapper;
 
 import org.springframework.jdbc.core.RowMapper;
-import ua.com.bpgdev.movieland.entity.Genre;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import ua.com.bpgdev.movieland.entity.Genre;
 
 public class GenreRowMapper implements RowMapper<Genre> {
     @Override

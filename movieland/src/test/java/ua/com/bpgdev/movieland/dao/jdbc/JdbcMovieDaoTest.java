@@ -47,6 +47,7 @@ public class JdbcMovieDaoTest {
     @Autowired
     private JdbcMovieDao jdbcMovieDao;
 
+
     private List<Movie> expectedMoviesGetAll;
     private List<Movie> expectedMoviesByGenre;
 
@@ -86,16 +87,6 @@ public class JdbcMovieDaoTest {
         movie.setPrice(BigDecimal.valueOf(200.60d));
         movie.setPicturePath("https://images-na.ssl-images-amazon.com/images/M/MV5BNWIwODRlZTUtY2U3ZS00Yzg1LWJhNzYtMmZiYmEyNmU1NjMzXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1._SY209_CR2,0,140,209_.jpg");
         expectedMoviesGetAll.add(movie);
-    }
-
-    @Test
-    public void testGetAll() {
-        JdbcTemplate mockJdbcTemplateGetAll = mock(JdbcTemplate.class);
-        JdbcMovieDao mockMovieDao = new JdbcMovieDao(mockJdbcTemplateGetAll);
-        when(mockJdbcTemplateGetAll.query(mockMovieDao.getSqlGetAllMovies(), JdbcMovieDao.MOVIE_ROW_MAPPER)).
-                thenReturn(expectedMoviesGetAll);
-
-        assertEquals(3, mockMovieDao.getAll().size());
     }
 
     @Test
@@ -228,26 +219,5 @@ public class JdbcMovieDaoTest {
         expectedMovies.sort(MOVIE_RATING_DESCENDING_COMPARATOR);
 
         assertEquals(expectedMovies, actualSortedMovies);
-    }
-
-    @Test
-    public void testGetById(){
-        Movie expectedMovie = new Movie();
-        expectedMovie.setId(1);
-        expectedMovie.setNameRussian("Побег из Шоушенка");
-        expectedMovie.setNameNative("The Shawshank Redemption");
-        expectedMovie.setYearOfRelease(1994);
-        expectedMovie.setDescription("Успешный банкир Энди Дюфрейн обвинен в убийстве собственной жены и ее любовника. " +
-                "Оказавшись в тюрьме под названием Шоушенк, он сталкивается с жестокостью и беззаконием, " +
-                "царящими по обе стороны решетки. Каждый, кто попадает в эти стены, становится их рабом до конца жизни. " +
-                "Но Энди, вооруженный живым умом и доброй душой, отказывается мириться с приговором судьбы " +
-                "и начинает разрабатывать невероятно дерзкий план своего освобождения.");
-        expectedMovie.setRating(8.9d);
-        expectedMovie.setPrice(BigDecimal.valueOf(123.45d));
-        expectedMovie.setPicturePath("https://images-na.ssl-images-amazon.com/images/M/MV5BODU4MjU4NjIwNl5BMl5BanBnXkFtZTgwMDU2MjEyMDE@._V1._SY209_CR0,0,140,209_.jpg");
-
-        Movie actualMovie = jdbcMovieDao.getById(1);
-
-        assertEquals(expectedMovie, actualMovie);
     }
 }

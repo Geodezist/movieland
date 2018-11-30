@@ -1,11 +1,12 @@
 package ua.com.bpgdev.movieland.dao.jdbc.mapper;
 
 import org.springframework.jdbc.core.RowMapper;
-import ua.com.bpgdev.movieland.entity.Movie;
-
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import ua.com.bpgdev.movieland.entity.Movie;
+
 
 public class MovieRowMapper implements RowMapper<Movie> {
     @Override

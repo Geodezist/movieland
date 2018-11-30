@@ -5,10 +5,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import java.util.List;
+
 import ua.com.bpgdev.movieland.dao.jdbc.mapper.ReviewRowMapper;
 import ua.com.bpgdev.movieland.entity.Review;
-
-import java.util.List;
 
 @Repository
 @Primary
