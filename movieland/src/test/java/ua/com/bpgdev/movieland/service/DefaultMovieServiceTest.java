@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+import ua.com.bpgdev.movieland.common.RequestParameters;
 import ua.com.bpgdev.movieland.dao.MovieDao;
 import ua.com.bpgdev.movieland.dao.jdbc.JdbcMovieDao;
 import ua.com.bpgdev.movieland.entity.*;
@@ -26,6 +27,8 @@ public class DefaultMovieServiceTest {
     private JdbcMovieDao jdbcMovieDao;
     @Autowired
     private DefaultMovieEnricherService defaultMovieEnricherService;
+    @Autowired
+    private DefaultCurrencyRateService defaultCurrencyRateService;
 
 
     private List<Movie> expectedMoviesGetAll;
@@ -122,7 +125,10 @@ public class DefaultMovieServiceTest {
     public void testGetAll() {
         MovieDao mockMovieDaoGetAll = mock(JdbcMovieDao.class);
         when(mockMovieDaoGetAll.getAll()).thenReturn(expectedMoviesGetAll);
-        MovieService movieServiceGetAll = new DefaultMovieService(mockMovieDaoGetAll, defaultMovieEnricherService);
+        MovieService movieServiceGetAll =
+                new DefaultMovieService(mockMovieDaoGetAll,
+                        defaultMovieEnricherService,
+                        defaultCurrencyRateService);
         List<Movie> actualMovies = movieServiceGetAll.getAll();
 
         assertEquals(expectedMoviesGetAll.size(), actualMovies.size());
@@ -133,7 +139,10 @@ public class DefaultMovieServiceTest {
 
     @Test
     public void testIGetThreeRandom() {
-        MovieService movieService = new DefaultMovieService(jdbcMovieDao, defaultMovieEnricherService);
+        MovieService movieService =
+                new DefaultMovieService(jdbcMovieDao,
+                        defaultMovieEnricherService,
+                        defaultCurrencyRateService);
 
         List<Movie> actualMoviesFirstTry = movieService.getThreeRandom();
         List<Movie> actualMoviesSecondTry = movieService.getThreeRandom();
@@ -148,7 +157,10 @@ public class DefaultMovieServiceTest {
         int genreId = 2;
         MovieDao mockMovieDaoGetByGenreId = mock(JdbcMovieDao.class);
         when(mockMovieDaoGetByGenreId.getByGenreId(genreId)).thenReturn(expectedMoviesByGenre);
-        MovieService movieServiceGetByGenreId = new DefaultMovieService(mockMovieDaoGetByGenreId, defaultMovieEnricherService);
+        MovieService movieServiceGetByGenreId =
+                new DefaultMovieService(mockMovieDaoGetByGenreId,
+                        defaultMovieEnricherService,
+                        defaultCurrencyRateService);
         List<Movie> actualMoviesByGenre = movieServiceGetByGenreId.getByGenreId(genreId);
 
         assertEquals(expectedMoviesByGenre, actualMoviesByGenre);
@@ -157,7 +169,10 @@ public class DefaultMovieServiceTest {
     @Test
     public void testIGetByGenreId() {
         int genreId = 2;
-        MovieService movieService = new DefaultMovieService(jdbcMovieDao, defaultMovieEnricherService);
+        MovieService movieService =
+                new DefaultMovieService(jdbcMovieDao,
+                        defaultMovieEnricherService,
+                        defaultCurrencyRateService);
         List<Movie> actualMoviesByGenre = movieService.getByGenreId(genreId);
 
         int moviesCount = 7;
@@ -175,16 +190,16 @@ public class DefaultMovieServiceTest {
 
         MovieDao mockMovieDaoGetById = mock(JdbcMovieDao.class);
         when(mockMovieDaoGetById.getById(movieId)).thenReturn(expectedMovieForGetMovieById);
-        MovieService movieServiceGetById = new DefaultMovieService(mockMovieDaoGetById, defaultMovieEnricherService);
+        MovieService movieServiceGetById = new DefaultMovieService(mockMovieDaoGetById, defaultMovieEnricherService, defaultCurrencyRateService);
 
-        Movie actualMovie = movieServiceGetById.getById(movieId);
+        Movie actualMovie = movieServiceGetById.getById(movieId, new RequestParameters());
         assertEquals(expectedMovieForGetMovieById, actualMovie);
     }
 
     @Test
     public void testIGetById() {
-        MovieService movieService = new DefaultMovieService(jdbcMovieDao, defaultMovieEnricherService);
-        Movie actualMovie = movieService.getById(21);
+        MovieService movieService = new DefaultMovieService(jdbcMovieDao, defaultMovieEnricherService, defaultCurrencyRateService);
+        Movie actualMovie = movieService.getById(21, new RequestParameters());
 
         assertEquals(expectedMovieForGetMovieById, actualMovie);
         assertEquals(expectedGenresForGetMovieById, actualMovie.getGenres());

@@ -18,6 +18,7 @@
         <module>movieland-service</module>
         <module>movieland-service-default</module>
         <module>movieland-web</module>
+        <module>movieland-dao-rest</module>
     </modules>
 
     <properties>
@@ -36,11 +37,13 @@
         <movieland-common.version>${movieland.version}</movieland-common.version>
         <movieland-dao.version>${movieland.version}</movieland-dao.version>
         <movieland-dao-jdbc.version>${movieland.version}</movieland-dao-jdbc.version>
+        <movieland-dao-rest.version>${movieland.version}</movieland-dao-rest.version>
         <movieland-service.version>${movieland.version}</movieland-service.version>
         <movieland-service-default.version>${movieland.version}</movieland-service-default.version>
         <movieland-web.version>${movieland.version}</movieland-web.version>
 
         <spring-context.version>5.1.2.RELEASE</spring-context.version>
+        <spring-web.version>5.1.2.RELEASE</spring-web.version>
         <spring-webmvc.version>5.1.2.RELEASE</spring-webmvc.version>
         <jackson-databind.version>2.9.7</jackson-databind.version>
         <javax.annotation-api.version>1.3.2</javax.annotation-api.version>
@@ -198,6 +201,12 @@
 
             <dependency>
                 <groupId>ua.com.bpgdev</groupId>
+                <artifactId>movieland-dao-rest</artifactId>
+                <version>${movieland-dao-rest.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>ua.com.bpgdev</groupId>
                 <artifactId>movieland-service</artifactId>
                 <version>${movieland-service.version}</version>
             </dependency>
@@ -222,6 +231,12 @@
             </dependency>
 
             <!-- WEB -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>${spring-web.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-webmvc</artifactId>

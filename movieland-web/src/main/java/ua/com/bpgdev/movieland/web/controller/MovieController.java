@@ -23,38 +23,37 @@ public class MovieController {
 
     @RequestMapping(path = "/movie", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<Movie> getAll(@RequestParam(value = "rating", required = false) SortingOrder ratingSortingOrder,
-                              @RequestParam(value = "price", required = false) SortingOrder priceSortingOrder) {
-        if (ratingSortingOrder == null && priceSortingOrder == null) {
-            return movieService.getAll();
-        }
+                              @RequestParam(value = "price", required = false) SortingOrder priceSortingOrder,
+                              @RequestParam(value = "currency", required = false) CurrencyCode currencyCode) {
         RequestParameters requestParameters = prepareRequestParameter(ratingSortingOrder, priceSortingOrder);
+        requestParameters.setCurrencyParameter(currencyCode);
         return movieService.getAll(requestParameters);
     }
 
     @RequestMapping(path = "/movie/random", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<Movie> getThreeRandom(@RequestParam(value = "rating", required = false) SortingOrder ratingSortingOrder,
-                                      @RequestParam(value = "price", required = false) SortingOrder priceSortingOrder) {
-        if (ratingSortingOrder == null && priceSortingOrder == null) {
-            return movieService.getThreeRandom();
-        }
+                                      @RequestParam(value = "price", required = false) SortingOrder priceSortingOrder,
+                                      @RequestParam(value = "currency", required = false) CurrencyCode currencyCode) {
         RequestParameters requestParameters = prepareRequestParameter(ratingSortingOrder, priceSortingOrder);
+        requestParameters.setCurrencyParameter(currencyCode);
         return movieService.getThreeRandom(requestParameters);
     }
 
     @RequestMapping(path = "/movie/genre/{genreId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<Movie> getByGenreId(@PathVariable int genreId,
                                     @RequestParam(value = "rating", required = false) SortingOrder ratingSortingOrder,
-                                    @RequestParam(value = "price", required = false) SortingOrder priceSortingOrder) {
-        if (ratingSortingOrder == null && priceSortingOrder == null) {
-            return movieService.getByGenreId(genreId);
-        }
+                                    @RequestParam(value = "price", required = false) SortingOrder priceSortingOrder,
+                                    @RequestParam(value = "currency", required = false) CurrencyCode currencyCode) {
         RequestParameters requestParameters = prepareRequestParameter(ratingSortingOrder, priceSortingOrder);
+        requestParameters.setCurrencyParameter(currencyCode);
         return movieService.getByGenreId(genreId, requestParameters);
     }
 
     @RequestMapping(path = "/movie/{movieId}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public Movie getById(@PathVariable int movieId) {
-        return movieService.getById(movieId);
+    public Movie getById(@PathVariable int movieId,
+                         @RequestParam(value = "currency", required = false) CurrencyCode currencyCode) {
+        RequestParameters requestParameters = new RequestParameters(currencyCode);
+        return movieService.getById(movieId, requestParameters);
     }
 
     @ExceptionHandler(/*{IllegalArgumentException.class}*/)
@@ -66,14 +65,17 @@ public class MovieController {
     @InitBinder
     public void initBinder(WebDataBinder dataBinder) {
         dataBinder.registerCustomEditor(SortingOrder.class, new SortingOrderConverter());
+        dataBinder.registerCustomEditor(CurrencyCode.class, new CurrencyCodeConverter());
     }
 
     private RequestParameters prepareRequestParameter(SortingOrder ratingSortingOrder, SortingOrder priceSortingOrder) {
         SortingParameter sortingParameter;
         if (ratingSortingOrder != null) {
             sortingParameter = new SortingParameter(SortingField.RATING, ratingSortingOrder);
-        } else {
+        } else if (priceSortingOrder != null) {
             sortingParameter = new SortingParameter(SortingField.PRICE, priceSortingOrder);
+        } else {
+            return new RequestParameters();
         }
         return new RequestParameters(sortingParameter);
     }
