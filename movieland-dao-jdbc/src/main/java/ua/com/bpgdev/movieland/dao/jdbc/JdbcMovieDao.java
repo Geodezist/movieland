@@ -44,7 +44,7 @@ public class JdbcMovieDao implements MovieDao {
 
     @Override
     public List<Movie> getAll(RequestParameters requestParameters) {
-        if (requestParameters == null) {
+        if (requestParameters == null || requestParameters.getSortingParameter() == null) {
             return getAll();
         }
         String query = queryBuilder.build(sqlGetAllMovies, requestParameters);
@@ -58,7 +58,7 @@ public class JdbcMovieDao implements MovieDao {
 
     @Override
     public List<Movie> getThreeRandom(RequestParameters requestParameters) {
-        if (requestParameters == null) {
+        if (requestParameters == null || requestParameters.getSortingParameter() == null) {
             return getThreeRandom();
         }
         String query = queryBuilder.build(sqlGetRandomMovies, requestParameters);
@@ -72,7 +72,7 @@ public class JdbcMovieDao implements MovieDao {
 
     @Override
     public List<Movie> getByGenreId(int genreId, RequestParameters requestParameters) {
-        if (requestParameters == null) {
+        if (requestParameters == null || requestParameters.getSortingParameter() == null) {
             return getByGenreId(genreId);
         }
         String query = queryBuilder.build(sqlGetMoviesByGenreId, requestParameters);
