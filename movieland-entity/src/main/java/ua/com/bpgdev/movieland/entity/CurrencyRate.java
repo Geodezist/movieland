@@ -20,31 +20,16 @@ public class CurrencyRate {
         return currencyNameNative;
     }
 
-    public void setCurrencyNameNative(String currencyNameNative) {
-        this.currencyNameNative = currencyNameNative;
-    }
-
     public BigDecimal getRate() {
         return rate;
-    }
-
-    public void setRate(BigDecimal rate) {
-        this.rate = rate;
     }
 
     public String getCurrencyCode() {
         return currencyCode;
     }
 
-    public void setCurrencyCode(String currencyCode) {
-        this.currencyCode = currencyCode;
-    }
-
     public LocalDate getExchangeDate() {
         return exchangeDate;
     }
 
-    public void setExchangeDate(LocalDate exchangeDate) {
-        this.exchangeDate = exchangeDate;
-    }
 }

@@ -14,7 +14,7 @@ public class DefaultCurrencyRateService implements CurrencyRateService {
     }
 
     @Override
-    public CurrencyRate getRateByCode(String currencyCode)  {
+    public CurrencyRate getRateByCode(String currencyCode) {
         return currencyRateDao.getRateByCode(currencyCode);
     }
 }

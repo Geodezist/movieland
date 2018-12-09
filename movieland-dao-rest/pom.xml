@@ -29,6 +29,12 @@
             <artifactId>spring-web</artifactId>
         </dependency>
 
+        <!-- UTILS -->
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+        </dependency>
+
         <!-- LOGGING -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
